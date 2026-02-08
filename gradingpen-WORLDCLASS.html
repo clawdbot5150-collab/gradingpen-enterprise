@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradingPen - World-Class AI Educational Platform</title>
+    
+    <!-- Enhanced SEO & EEAT Optimization -->
+    <meta name="description" content="Transform educational grading with AI-powered platform. Save 80% grading time with intelligent assessment, real-time analytics, and personalized feedback. Trusted by 2K+ teachers.">
+    <meta name="keywords" content="AI grading, educational technology, automated assessment, teacher tools, essay grading, AI feedback, educational AI, grading automation">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="GradingPen">
+    
+    <!-- Open Graph Enhanced -->
+    <meta property="og:title" content="GradingPen - World-Class AI Educational Platform">
+    <meta property="og:description" content="AI-powered grading that saves teachers 80% of their time with intelligent assessment and personalized feedback">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gradingpen.com">
+    <meta property="og:site_name" content="GradingPen">
+    
+    <!-- Professional Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Modern Professional Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
+    
+    <style>
+        /* === WORLD-CLASS DESIGN SYSTEM (Following Exact Specifications) === */
+        :root {
+            /* PRIMARY BRAND COLORS - Professional Ocean Theme */
+            --ocean-blue: #0A2463;
+            --ocean-blue-light: #1e3a8a;
+            --ocean-blue-dark: #051529;
+            --ocean-blue-50: rgba(10, 36, 99, 0.05);
+            --ocean-blue-100: rgba(10, 36, 99, 0.1);
+            --ocean-blue-900: rgba(10, 36, 99, 0.9);
+            
+            /* VIBRANT CYAN ACCENTS */
+            --cyan: #00B4D8;
+            --cyan-light: #0ea5e9;
+            --cyan-dark: #0891b2;
+            --cyan-50: rgba(0, 180, 216, 0.05);
+            --cyan-100: rgba(0, 180, 216, 0.1);
+            --cyan-900: rgba(0, 180, 216, 0.9);
+            
+            /* ELECTRIC AMBER HIGHLIGHTS */
+            --amber: #F77F00;
+            --amber-light: #fb923c;
+            --amber-dark: #c2410c;
+            --amber-50: rgba(247, 127, 0, 0.05);
+            --amber-100: rgba(247, 127, 0, 0.1);
+            --amber-900: rgba(247, 127, 0, 0.9);
+            
+            /* PROFESSIONAL GRADIENT SYSTEM */
+            --gradient-primary: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            --gradient-accent: linear-gradient(135deg, var(--cyan), var(--amber));
+            --gradient-hero: linear-gradient(135deg, #0A2463 0%, #0B2D5A 25%, #00B4D8 75%, #0EA5E9 100%);
+            --gradient-education: linear-gradient(90deg, var(--ocean-blue-100), var(--cyan-100));
+            
+            /* EXTENDED PROFESSIONAL GRAYSCALE */
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --gray-950: #020617;
+            
+            /* PROFESSIONAL TYPOGRAPHY SCALE */
+            --font-heading: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            
+            /* PRECISE TYPOGRAPHY SCALE (8px grid) */
+            --text-xs: 0.75rem;     /* 12px */
+            --text-sm: 0.875rem;    /* 14px */
+            --text-base: 1rem;      /* 16px */
+            --text-lg: 1.125rem;    /* 18px */
+            --text-xl: 1.25rem;     /* 20px */
+            --text-2xl: 1.5rem;     /* 24px */
+            --text-3xl: 1.875rem;   /* 30px */
+            --text-4xl: 2.25rem;    /* 36px */
+            --text-5xl: 3rem;       /* 48px */
+            --text-6xl: 3.75rem;    /* 60px */
+            --text-7xl: 4.5rem;     /* 72px */
+            
+            /* PROFESSIONAL SPACING SYSTEM (8px grid) */
+            --space-0: 0;
+            --space-1: 0.5rem;      /* 8px */
+            --space-2: 1rem;        /* 16px */
+            --space-3: 1.5rem;      /* 24px */
+            --space-4: 2rem;        /* 32px */
+            --space-5: 2.5rem;      /* 40px */
+            --space-6: 3rem;        /* 48px */
+            --space-8: 4rem;        /* 64px */
+            --space-10: 5rem;       /* 80px */
+            --space-12: 6rem;       /* 96px */
+            --space-16: 8rem;       /* 128px */
+            --space-20: 10rem;      /* 160px */
+            --space-24: 12rem;      /* 192px */
+            
+            /* MODERN BORDER RADIUS SYSTEM */
+            --radius-sm: 0.375rem;  /* 6px */
+            --radius-base: 0.5rem;  /* 8px */
+            --radius-md: 0.75rem;   /* 12px */
+            --radius-lg: 1rem;      /* 16px */
+            --radius-xl: 1.5rem;    /* 24px */
+            --radius-2xl: 2rem;     /* 32px */
+            --radius-full: 9999px;
+            
+            /* PROFESSIONAL SHADOWS SYSTEM */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-base: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.15), 0 12px 20px rgba(0, 0, 0, 0.08);
+            
+            /* SMOOTH PROFESSIONAL TRANSITIONS */
+            --transition-fast: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Z-INDEX SYSTEM */
+            --z-dropdown: 1000;
+            --z-fixed: 1030;
+            --z-modal: 1050;
+        }
+        
+        /* === MODERN CSS RESET === */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            line-height: 1.5;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--white);
+            font-size: var(--text-base);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* === PROFESSIONAL NAVIGATION === */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            background: rgba(248, 250, 252, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition-base);
+            height: 80px;
+        }
+        
+        .nav.scrolled {
+            background: rgba(248, 250, 252, 0.98);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            text-decoration: none;
+            transition: var(--transition-base);
+        }
+        
+        .nav-logo:hover {
+            transform: scale(1.02);
+        }
+        
+        .nav-logo svg {
+            height: 44px;
+            width: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--space-8);
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: var(--text-sm);
+            transition: var(--transition-base);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--ocean-blue);
+            transform: translateY(-1px);
+        }
+        
+        .nav-cta {
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-base);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* === HERO SECTION === */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            position: relative;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(247, 127, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 180, 216, 0.1) 0%, transparent 50%);
+        }
+        
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-12);
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-content {
+            animation: fadeInUp 800ms ease-out;
+        }
+        
+        .hero-logo {
+            margin-bottom: var(--space-6);
+        }
+        
+        .hero-logo svg {
+            height: 80px;
+            width: auto;
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));
+        }
+        
+        .hero-title {
+            font-size: var(--text-6xl);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: var(--space-6);
+            font-family: var(--font-heading);
+            background: linear-gradient(135deg, var(--white), var(--cyan-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: var(--text-xl);
+            line-height: 1.6;
+            margin-bottom: var(--space-8);
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+        
+        .hero-stat {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hero-stat-number {
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            color: var(--amber);
+            margin-bottom: var(--space-1);
+        }
+        
+        .hero-stat-label {
+            font-size: var(--text-sm);
+            opacity: 0.8;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: var(--white);
+            color: var(--ocean-blue);
+            border: none;
+            padding: var(--space-4) var(--space-8);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-lg);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: var(--space-4) var(--space-8);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-base);
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* === AI GRADING VISUALIZATION (Unique Element #1) === */
+        .hero-visual {
+            height: 600px;
+            position: relative;
+            border-radius: var(--radius-2xl);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #gradingVisualization {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .grading-interface {
+            position: absolute;
+            top: var(--space-6);
+            left: var(--space-6);
+            right: var(--space-6);
+            bottom: var(--space-6);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .essay-preview {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            color: var(--gray-800);
+            flex: 1;
+            margin-bottom: var(--space-4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-analysis {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 40%;
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            color: white;
+            padding: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+        
+        .grade-display {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .grade-score {
+            font-size: var(--text-4xl);
+            font-weight: 800;
+            color: var(--amber);
+            margin-bottom: var(--space-2);
+        }
+        
+        /* === FEATURES SECTION === */
+        .features {
+            padding: var(--space-24) 0;
+            background: var(--gray-50);
+        }
+        
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-16);
+        }
+        
+        .section-badge {
+            display: inline-block;
+            background: var(--cyan-100);
+            color: var(--cyan-dark);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            margin-bottom: var(--space-4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .section-title {
+            font-size: var(--text-5xl);
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--gray-900);
+            margin-bottom: var(--space-6);
+            font-family: var(--font-heading);
+        }
+        
+        .section-subtitle {
+            font-size: var(--text-xl);
+            color: var(--gray-600);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: var(--space-8);
+        }
+        
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-base);
+            transition: var(--transition-base);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition-base);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-base);
+        }
+        
+        .feature-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-3);
+            font-family: var(--font-heading);
+        }
+        
+        .feature-description {
+            color: var(--gray-600);
+            line-height: 1.7;
+            margin-bottom: var(--space-4);
+        }
+        
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: var(--space-8);
+            }
+            
+            .hero-title {
+                font-size: var(--text-5xl);
+            }
+            
+            .hero-visual {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: var(--text-4xl);
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title {
+                font-size: var(--text-4xl);
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* === ANIMATIONS === */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes gradingAnimation {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        .grading-progress {
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            animation: gradingAnimation 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <svg width="280" height="80" viewBox="0 0 340 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="navGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0A2463;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00B4D8;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect x="25" y="28" width="28" height="28" rx="4" fill="url(#navGrad)" opacity="0.4"/>
+                    <rect x="35" y="38" width="28" height="28" rx="4" fill="url(#navGrad)" opacity="0.7"/>
+                    <rect x="45" y="48" width="28" height="28" rx="4" fill="url(#navGrad)"/>
+                    <text x="95" y="58" font-family="Space Grotesk, Inter, sans-serif" font-size="32" font-weight="800" fill="#0A2463" letter-spacing="-0.5">GradingPen</text>
+                    <text x="95" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#64748b" letter-spacing="2">AI GRADING PLATFORM</text>
+                </svg>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><button class="nav-cta" onclick="startFreeTrial()">Start Free Trial</button></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-logo">
+                    <svg width="340" height="100" viewBox="0 0 340 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#F77F00;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="25" y="28" width="28" height="28" rx="4" fill="url(#heroGrad)" opacity="0.4"/>
+                        <rect x="35" y="38" width="28" height="28" rx="4" fill="url(#heroGrad)" opacity="0.7"/>
+                        <rect x="45" y="48" width="28" height="28" rx="4" fill="url(#heroGrad)"/>
+                        <text x="95" y="58" font-family="Space Grotesk, Inter, sans-serif" font-size="32" font-weight="800" fill="#ffffff" letter-spacing="-0.5">GradingPen</text>
+                        <text x="95" y="78" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#94a3b8" letter-spacing="2">AI GRADING PLATFORM</text>
+                    </svg>
+                </div>
+                
+                <h1 class="hero-title">
+                    Transform Educational Assessment
+                </h1>
+                
+                <p class="hero-subtitle">
+                    AI-powered grading platform that saves teachers 80% of their time while providing detailed, personalized feedback and real-time analytics.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-number" id="essaysGraded">50K+</div>
+                        <div class="hero-stat-label">Essays Graded</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number" id="teachersActive">2K+</div>
+                        <div class="hero-stat-label">Teachers</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number" id="timeSaved">80%</div>
+                        <div class="hero-stat-label">Time Saved</div>
+                    </div>
+                </div>
+                
+                <div class="hero-actions">
+                    <a href="#" class="btn-primary" onclick="startFreeTrial()">
+                        <span>🚀</span>
+                        Start Free Trial
+                    </a>
+                    <a href="#features" class="btn-secondary">
+                        <span>📊</span>
+                        See Demo
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div id="gradingVisualization">
+                    <div class="grading-interface">
+                        <div class="essay-preview">
+                            <h3 style="color: #0A2463; margin-bottom: 1rem;">Essay Analysis in Progress</h3>
+                            <p style="margin-bottom: 1rem; line-height: 1.6;">
+                                "The importance of renewable energy cannot be overstated in our current environmental crisis. Solar and wind power offer sustainable alternatives to fossil fuels..."
+                            </p>
+                            <div class="grading-progress"></div>
+                            
+                            <div class="ai-analysis">
+                                <h4 style="margin-bottom: 1rem;">AI Analysis</h4>
+                                <div style="font-size: 0.875rem; opacity: 0.9;">
+                                    <div style="margin-bottom: 0.5rem;">📝 Structure: Excellent</div>
+                                    <div style="margin-bottom: 0.5rem;">🎯 Arguments: Strong</div>
+                                    <div style="margin-bottom: 0.5rem;">📚 Evidence: Good</div>
+                                    <div style="margin-bottom: 0.5rem;">✍️ Writing: Clear</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grade-display">
+                            <div class="grade-score" id="currentGrade">A-</div>
+                            <div style="font-size: 0.875rem; opacity: 0.8;">Generated in 2.3 seconds</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <div class="section-badge">🎓 Core Features</div>
+                <h2 class="section-title">Intelligent Grading Technology</h2>
+                <p class="section-subtitle">
+                    Advanced AI algorithms provide detailed feedback, rubric-based assessment, and comprehensive analytics to enhance educational outcomes.
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI-Powered Assessment</h3>
+                    <p class="feature-description">
+                        Advanced machine learning models analyze writing quality, structure, content, and provide detailed feedback in seconds.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Real-Time Analytics</h3>
+                    <p class="feature-description">
+                        Comprehensive dashboards track student progress, identify learning gaps, and provide actionable insights for educators.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Custom Rubrics</h3>
+                    <p class="feature-description">
+                        Create and customize grading rubrics that align with your curriculum standards and assessment criteria.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Instant Feedback</h3>
+                    <p class="feature-description">
+                        Students receive immediate, detailed feedback on their work, enabling faster learning and improvement.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Secure & Private</h3>
+                    <p class="feature-description">
+                        Enterprise-grade security ensures student data privacy with FERPA compliance and encrypted storage.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Multi-Language Support</h3>
+                    <p class="feature-description">
+                        Support for multiple languages and diverse writing styles, accommodating global educational needs.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // === NAVIGATION FUNCTIONALITY === 
+        function handleNavScroll() {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        }
+        
+        // === REAL-TIME STATS ANIMATION ===
+        function animateStats() {
+            const essays = document.getElementById('essaysGraded');
+            const teachers = document.getElementById('teachersActive');
+            const grade = document.getElementById('currentGrade');
+            
+            let essayCount = 50000;
+            let teacherCount = 2000;
+            const grades = ['A+', 'A', 'A-', 'B+', 'B', 'B-'];
+            let gradeIndex = 2;
+            
+            setInterval(() => {
+                essayCount += Math.floor(Math.random() * 10) + 1;
+                teacherCount += Math.random() > 0.97 ? 1 : 0;
+                gradeIndex = (gradeIndex + 1) % grades.length;
+                
+                essays.textContent = (essayCount / 1000).toFixed(0) + 'K+';
+                teachers.textContent = (teacherCount / 1000).toFixed(1) + 'K+';
+                grade.textContent = grades[gradeIndex];
+            }, 3000);
+        }
+        
+        // === CTA FUNCTIONS ===
+        function startFreeTrial() {
+            alert('🚀 Free Trial Starting!\n\nYour 14-day free trial with full access to all features is being set up.\n\nCheck your email for login instructions!');
+        }
+        
+        // === GSAP ANIMATIONS ===
+        function initAnimations() {
+            if (window.gsap && window.ScrollTrigger) {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                // Feature cards animation
+                gsap.fromTo('.feature-card', {
+                    opacity: 0,
+                    y: 30
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    scrollTrigger: {
+                        trigger: '.features-grid',
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            }
+        }
+        
+        // === INITIALIZATION ===
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('scroll', handleNavScroll);
+            animateStats();
+            
+            // Initialize GSAP animations
+            setTimeout(() => {
+                if (window.gsap && window.ScrollTrigger) {
+                    initAnimations();
+                }
+            }, 100);
+            
+            console.log('🎓 GradingPen World-Class Platform Initialized!');
+        });
+    </script>
+</body>
+</html>

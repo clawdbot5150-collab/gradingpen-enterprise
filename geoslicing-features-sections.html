@@ -1,0 +1,764 @@
+<!-- CONTINUING THE PROFESSIONAL REDESIGN - FEATURES & SECTIONS -->
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <span class="section-tag">Platform Capabilities</span>
+                <h2 class="section-title">Professional-Grade Geospatial Intelligence</h2>
+                <p class="section-description">
+                    Our comprehensive platform combines cutting-edge technology with intuitive design 
+                    to deliver unparalleled spatial analysis capabilities.
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- 3D Visualization -->
+                <div class="feature-card feature-spotlight">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Interactive 3D Visualization</h3>
+                    <p>Immersive 3D globe with real-time data rendering, custom shaders, and smooth animations powered by WebGL technology.</p>
+                    <ul class="feature-list">
+                        <li>Real-time data streaming</li>
+                        <li>Custom shader effects</li>
+                        <li>Smooth camera controls</li>
+                        <li>High-performance rendering</li>
+                    </ul>
+                    <div class="feature-demo">
+                        <canvas id="featureGlobe" width="300" height="200"></canvas>
+                    </div>
+                </div>
+                
+                <!-- AI-Powered Analysis -->
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Advanced machine learning algorithms provide intelligent insights and recommendations for your spatial data.</p>
+                    <ul class="feature-list">
+                        <li>Pattern recognition</li>
+                        <li>Predictive analytics</li>
+                        <li>Automated insights</li>
+                        <li>Natural language queries</li>
+                    </ul>
+                    <div class="ai-demo">
+                        <div class="ai-query-box">
+                            <input type="text" placeholder="Ask: 'Find areas with high population density'" readonly>
+                            <div class="ai-response">🔍 Analyzing 2.8M data points...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Real-time Data Streaming -->
+                <div class="feature-card">
+                    <div class="feature-icon">📡</div>
+                    <h3>Real-time Data Streaming</h3>
+                    <p>Connect to live data sources and watch your visualizations update in real-time with sub-second latency.</p>
+                    <ul class="feature-list">
+                        <li>Live API integration</li>
+                        <li>WebSocket connections</li>
+                        <li>Sub-second updates</li>
+                        <li>Multi-source aggregation</li>
+                    </ul>
+                    <div class="streaming-demo">
+                        <div class="stream-indicator active">🟢 Live Stream Active</div>
+                        <div class="stream-stats">
+                            <span>Updates/sec: <strong id="streamRate">47</strong></span>
+                            <span>Latency: <strong id="streamLatency">23ms</strong></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Advanced Analytics -->
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Advanced Analytics Dashboard</h3>
+                    <p>Comprehensive analytics with interactive charts, heatmaps, and statistical analysis tools.</p>
+                    <ul class="feature-list">
+                        <li>Interactive charts</li>
+                        <li>Heat map visualization</li>
+                        <li>Statistical analysis</li>
+                        <li>Custom dashboards</li>
+                    </ul>
+                    <div class="analytics-demo">
+                        <div class="mini-chart" id="miniChart"></div>
+                    </div>
+                </div>
+                
+                <!-- Geospatial Calculator -->
+                <div class="feature-card">
+                    <div class="feature-icon">🧮</div>
+                    <h3>Geospatial Calculator</h3>
+                    <p>Powerful calculation tools for distance, area, coordinate conversion, and spatial analysis operations.</p>
+                    <ul class="feature-list">
+                        <li>Distance calculations</li>
+                        <li>Area measurements</li>
+                        <li>Coordinate conversion</li>
+                        <li>Spatial operations</li>
+                    </ul>
+                    <div class="calculator-demo">
+                        <div class="calc-display">
+                            <span>Distance: <strong>247.3 km</strong></span>
+                            <span>Area: <strong>15.2 km²</strong></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Performance Optimization -->
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Performance Optimized</h3>
+                    <p>Enterprise-grade performance with optimized rendering, efficient data handling, and scalable architecture.</p>
+                    <ul class="feature-list">
+                        <li>GPU acceleration</li>
+                        <li>Efficient data structures</li>
+                        <li>Lazy loading</li>
+                        <li>Memory optimization</li>
+                    </ul>
+                    <div class="performance-demo">
+                        <div class="perf-meter">
+                            <div class="perf-bar" style="width: 92%"></div>
+                            <span>92% Performance Score</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section class="interactive-demo" id="demo">
+        <div class="demo-container">
+            <div class="demo-header">
+                <h2>Experience the Platform Live</h2>
+                <p>Try our interactive tools and see the power of professional geospatial intelligence.</p>
+            </div>
+            
+            <div class="demo-tabs">
+                <button class="demo-tab active" data-tab="3d-visualization">3D Visualization</button>
+                <button class="demo-tab" data-tab="ai-analysis">AI Analysis</button>
+                <button class="demo-tab" data-tab="calculator">Geospatial Calculator</button>
+                <button class="demo-tab" data-tab="data-viz">Data Visualization</button>
+            </div>
+            
+            <!-- 3D Visualization Demo -->
+            <div class="demo-content active" data-content="3d-visualization">
+                <div class="demo-split">
+                    <div class="demo-visual">
+                        <div class="demo-globe-container">
+                            <canvas id="demoGlobe"></canvas>
+                            <div class="demo-controls">
+                                <button class="demo-btn" onclick="demoRotateGlobe()">🔄 Rotate</button>
+                                <button class="demo-btn" onclick="demoZoomGlobe()">🔍 Zoom</button>
+                                <button class="demo-btn" onclick="demoAddData()">📍 Add Data</button>
+                                <button class="demo-btn" onclick="demoReset()">🔄 Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-info">
+                        <h3>Interactive 3D Globe</h3>
+                        <p>Experience our professional-grade 3D visualization engine with real-time data rendering and smooth interactions.</p>
+                        <ul class="demo-features">
+                            <li>✅ WebGL-powered rendering</li>
+                            <li>✅ Real-time data points</li>
+                            <li>✅ Smooth camera controls</li>
+                            <li>✅ Custom shader effects</li>
+                            <li>✅ High-performance graphics</li>
+                        </ul>
+                        <button class="cta-button" onclick="startFreeTrial()">Start Free Trial</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Analysis Demo -->
+            <div class="demo-content" data-content="ai-analysis">
+                <div class="demo-split">
+                    <div class="demo-visual">
+                        <div class="ai-interface">
+                            <div class="ai-header">🧠 GeoSpatial AI Assistant</div>
+                            <div class="ai-chat-area" id="aiChatDemo">
+                                <div class="ai-message ai">👋 Hello! I'm your AI geospatial assistant. Ask me anything about spatial data analysis!</div>
+                                <div class="ai-message user">Find areas with population density > 1000 people/km²</div>
+                                <div class="ai-message ai">🔍 Analyzing global population data...<br>
+                                    <div class="ai-result">
+                                        <strong>Results found:</strong> 847 regions<br>
+                                        <strong>Top matches:</strong> Tokyo, Mumbai, Delhi<br>
+                                        <strong>Average density:</strong> 2,847 people/km²
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ai-input-area">
+                                <input type="text" placeholder="Try: 'Calculate distance between New York and London'" class="ai-input">
+                                <button class="ai-send" onclick="sendAIQuery()">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-info">
+                        <h3>AI-Powered Analysis</h3>
+                        <p>Natural language queries with intelligent spatial analysis and instant insights.</p>
+                        <ul class="demo-features">
+                            <li>✅ Natural language processing</li>
+                            <li>✅ Intelligent data analysis</li>
+                            <li>✅ Real-time insights</li>
+                            <li>✅ Pattern recognition</li>
+                            <li>✅ Predictive analytics</li>
+                        </ul>
+                        <button class="cta-button" onclick="startFreeTrial()">Try AI Assistant</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Geospatial Calculator Demo -->
+            <div class="demo-content" data-content="calculator">
+                <div class="demo-split">
+                    <div class="demo-visual">
+                        <div class="calculator-interface">
+                            <div class="calc-tabs">
+                                <button class="calc-tab active" data-calc="distance">Distance</button>
+                                <button class="calc-tab" data-calc="area">Area</button>
+                                <button class="calc-tab" data-calc="coordinates">Coordinates</button>
+                            </div>
+                            
+                            <!-- Distance Calculator -->
+                            <div class="calc-panel active" data-panel="distance">
+                                <h4>Distance Calculator</h4>
+                                <div class="calc-inputs">
+                                    <div class="input-group">
+                                        <label>Point A (Lat, Lon)</label>
+                                        <input type="text" value="40.7128, -74.0060" placeholder="New York">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Point B (Lat, Lon)</label>
+                                        <input type="text" value="51.5074, -0.1278" placeholder="London">
+                                    </div>
+                                    <button class="calc-button" onclick="calculateDistance()">Calculate</button>
+                                </div>
+                                <div class="calc-result">
+                                    <div class="result-item">
+                                        <span class="result-label">Distance:</span>
+                                        <span class="result-value">5,585.2 km</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">Bearing:</span>
+                                        <span class="result-value">51.4°</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Area Calculator -->
+                            <div class="calc-panel" data-panel="area">
+                                <h4>Area Calculator</h4>
+                                <div class="calc-inputs">
+                                    <div class="polygon-points">
+                                        <div class="point-input">
+                                            <input type="text" value="40.7128, -74.0060" placeholder="Point 1">
+                                        </div>
+                                        <div class="point-input">
+                                            <input type="text" value="40.7580, -73.9855" placeholder="Point 2">
+                                        </div>
+                                        <div class="point-input">
+                                            <input type="text" value="40.7489, -73.9680" placeholder="Point 3">
+                                        </div>
+                                    </div>
+                                    <button class="calc-button" onclick="calculateArea()">Calculate Area</button>
+                                </div>
+                                <div class="calc-result">
+                                    <div class="result-item">
+                                        <span class="result-label">Area:</span>
+                                        <span class="result-value">23.7 km²</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">Perimeter:</span>
+                                        <span class="result-value">19.8 km</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-info">
+                        <h3>Geospatial Calculator</h3>
+                        <p>Professional-grade calculation tools for all your spatial analysis needs.</p>
+                        <ul class="demo-features">
+                            <li>✅ Distance calculations</li>
+                            <li>✅ Area measurements</li>
+                            <li>✅ Coordinate conversions</li>
+                            <li>✅ Bearing calculations</li>
+                            <li>✅ Multiple coordinate systems</li>
+                        </ul>
+                        <button class="cta-button" onclick="startFreeTrial()">Access Calculator</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Data Visualization Demo -->
+            <div class="demo-content" data-content="data-viz">
+                <div class="demo-split">
+                    <div class="demo-visual">
+                        <div class="viz-dashboard">
+                            <div class="viz-controls">
+                                <select class="viz-select">
+                                    <option>Population Density</option>
+                                    <option>Temperature Data</option>
+                                    <option>Economic Indicators</option>
+                                </select>
+                                <button class="viz-button" onclick="updateVisualization()">Update</button>
+                            </div>
+                            <div class="viz-grid">
+                                <div class="viz-item">
+                                    <h5>Heatmap</h5>
+                                    <canvas id="heatmapDemo" width="200" height="150"></canvas>
+                                </div>
+                                <div class="viz-item">
+                                    <h5>Time Series</h5>
+                                    <canvas id="timeSeriesDemo" width="200" height="150"></canvas>
+                                </div>
+                                <div class="viz-item">
+                                    <h5>Distribution</h5>
+                                    <canvas id="distributionDemo" width="200" height="150"></canvas>
+                                </div>
+                                <div class="viz-item">
+                                    <h5>Statistics</h5>
+                                    <div class="stats-display">
+                                        <div class="stat">
+                                            <span class="stat-label">Mean:</span>
+                                            <span class="stat-value">847.3</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-label">Std Dev:</span>
+                                            <span class="stat-value">123.7</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-label">Range:</span>
+                                            <span class="stat-value">2,847</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-info">
+                        <h3>Data Visualization</h3>
+                        <p>Comprehensive visualization tools with interactive charts and real-time updates.</p>
+                        <ul class="demo-features">
+                            <li>✅ Interactive heatmaps</li>
+                            <li>✅ Time series analysis</li>
+                            <li>✅ Statistical visualizations</li>
+                            <li>✅ Real-time updates</li>
+                            <li>✅ Export capabilities</li>
+                        </ul>
+                        <button class="cta-button" onclick="startFreeTrial()">Explore Visualizations</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section class="solutions" id="solutions">
+        <div class="solutions-container">
+            <div class="section-header">
+                <span class="section-tag">Industry Applications</span>
+                <h2 class="section-title">Tailored Solutions for Every Industry</h2>
+                <p class="section-description">
+                    Our platform adapts to your specific industry needs with specialized tools and workflows.
+                </p>
+            </div>
+            
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="solution-icon">🏢</div>
+                    <h3>Urban Planning</h3>
+                    <p>Smart city development with population analysis, infrastructure planning, and environmental impact assessment.</p>
+                    <ul class="solution-features">
+                        <li>Population density mapping</li>
+                        <li>Infrastructure optimization</li>
+                        <li>Traffic flow analysis</li>
+                        <li>Environmental impact</li>
+                    </ul>
+                    <a href="#contact" class="solution-cta">Learn More →</a>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-icon">🌾</div>
+                    <h3>Agriculture</h3>
+                    <p>Precision farming with crop monitoring, yield optimization, and climate analysis for maximum productivity.</p>
+                    <ul class="solution-features">
+                        <li>Crop health monitoring</li>
+                        <li>Yield prediction</li>
+                        <li>Soil analysis</li>
+                        <li>Weather integration</li>
+                    </ul>
+                    <a href="#contact" class="solution-cta">Learn More →</a>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-icon">🛡️</div>
+                    <h3>Emergency Response</h3>
+                    <p>Real-time disaster monitoring, evacuation planning, and resource allocation for emergency management.</p>
+                    <ul class="solution-features">
+                        <li>Disaster tracking</li>
+                        <li>Emergency routing</li>
+                        <li>Resource allocation</li>
+                        <li>Risk assessment</li>
+                    </ul>
+                    <a href="#contact" class="solution-cta">Learn More →</a>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-icon">🌍</div>
+                    <h3>Environmental</h3>
+                    <p>Climate monitoring, conservation planning, and environmental impact analysis for sustainability initiatives.</p>
+                    <ul class="solution-features">
+                        <li>Climate analysis</li>
+                        <li>Conservation planning</li>
+                        <li>Pollution tracking</li>
+                        <li>Biodiversity monitoring</li>
+                    </ul>
+                    <a href="#contact" class="solution-cta">Learn More →</a>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-icon">🚛</div>
+                    <h3>Logistics</h3>
+                    <p>Supply chain optimization, route planning, and delivery tracking for efficient logistics operations.</p>
+                    <ul class="solution-features">
+                        <li>Route optimization</li>
+                        <li>Fleet tracking</li>
+                        <li>Supply chain analysis</li>
+                        <li>Delivery optimization</li>
+                    </ul>
+                    <a href="#contact" class="solution-cta">Learn More →</a>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-icon">🏭</div>
+                    <h3>Energy</h3>
+                    <p>Smart grid management, renewable energy planning, and infrastructure monitoring for energy sector.</p>
+                    <ul class="solution-features">
+                        <li>Smart grid analysis</li>
+                        <li>Renewable planning</li>
+                        <li>Infrastructure monitoring</li>
+                        <li>Energy optimization</li>
+                    </ul>
+                    <a href="#contact" class="solution-cta">Learn More →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional CSS for these sections -->
+    <style>
+        /* Features Section */
+        .features {
+            padding: var(--space-16) 0;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-12);
+        }
+        
+        .section-tag {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-3);
+        }
+        
+        .section-title {
+            font-size: var(--text-4xl);
+            margin-bottom: var(--space-4);
+            color: var(--gray-900);
+        }
+        
+        .section-description {
+            font-size: var(--text-lg);
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--space-6);
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-2xl);
+        }
+        
+        .feature-spotlight {
+            grid-column: span 2;
+            background: var(--gradient-hero);
+            color: white;
+            border: none;
+        }
+        
+        .feature-icon {
+            font-size: var(--text-4xl);
+            margin-bottom: var(--space-4);
+            display: block;
+        }
+        
+        .feature-card h3 {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-3);
+            color: var(--gray-900);
+        }
+        
+        .feature-spotlight h3 {
+            color: white;
+        }
+        
+        .feature-card p {
+            font-size: var(--text-base);
+            color: var(--gray-600);
+            margin-bottom: var(--space-4);
+            line-height: 1.6;
+        }
+        
+        .feature-spotlight p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-bottom: var(--space-4);
+        }
+        
+        .feature-list li {
+            padding: var(--space-1) 0;
+            position: relative;
+            padding-left: var(--space-4);
+            font-size: var(--text-sm);
+        }
+        
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .feature-spotlight .feature-list li::before {
+            color: var(--cyan);
+        }
+        
+        /* Demo Section */
+        .interactive-demo {
+            padding: var(--space-16) 0;
+            background: var(--gray-900);
+            color: white;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .demo-header h2 {
+            font-size: var(--text-4xl);
+            margin-bottom: var(--space-3);
+        }
+        
+        .demo-header p {
+            font-size: var(--text-lg);
+            color: var(--gray-400);
+        }
+        
+        .demo-tabs {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-8);
+            flex-wrap: wrap;
+        }
+        
+        .demo-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .demo-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .demo-tab.active {
+            background: var(--gradient-primary);
+            border-color: var(--cyan);
+        }
+        
+        .demo-content {
+            display: none;
+        }
+        
+        .demo-content.active {
+            display: block;
+        }
+        
+        .demo-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-8);
+            align-items: center;
+        }
+        
+        .demo-visual {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Solutions Section */
+        .solutions {
+            padding: var(--space-16) 0;
+            background: var(--white);
+        }
+        
+        .solutions-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+        }
+        
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+        }
+        
+        .solution-card {
+            background: var(--gray-50);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-6);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .solution-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            background: white;
+        }
+        
+        .solution-icon {
+            font-size: var(--text-3xl);
+            margin-bottom: var(--space-3);
+            display: block;
+        }
+        
+        .solution-card h3 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-3);
+            color: var(--gray-900);
+        }
+        
+        .solution-card p {
+            font-size: var(--text-base);
+            color: var(--gray-600);
+            margin-bottom: var(--space-4);
+            line-height: 1.6;
+        }
+        
+        .solution-features {
+            list-style: none;
+            margin-bottom: var(--space-4);
+        }
+        
+        .solution-features li {
+            padding: var(--space-1) 0;
+            position: relative;
+            padding-left: var(--space-3);
+            font-size: var(--text-sm);
+            color: var(--gray-600);
+        }
+        
+        .solution-features li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--ocean-blue);
+        }
+        
+        .solution-cta {
+            color: var(--ocean-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: var(--text-sm);
+            transition: var(--transition);
+        }
+        
+        .solution-cta:hover {
+            color: var(--cyan);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .feature-spotlight {
+                grid-column: span 1;
+            }
+            
+            .demo-split {
+                grid-template-columns: 1fr;
+                gap: var(--space-6);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: var(--text-3xl);
+            }
+            
+            .demo-header h2 {
+                font-size: var(--text-3xl);
+            }
+            
+            .demo-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .demo-tab {
+                width: 200px;
+                text-align: center;
+            }
+        }
+    </style>

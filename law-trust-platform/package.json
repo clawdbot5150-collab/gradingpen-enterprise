@@ -1,0 +1,57 @@
+{
+  "name": "law-trust-platform",
+  "version": "1.0.0",
+  "description": "Ultimate legal lead generation platform",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm run test",
+    "test:backend": "cd backend && npm run test",
+    "setup": "npm run setup:root && npm run setup:frontend && npm run setup:backend",
+    "setup:root": "npm install",
+    "setup:frontend": "cd frontend && npm install",
+    "setup:backend": "cd backend && npm install",
+    "start": "npm run start:backend",
+    "start:backend": "cd backend && npm start",
+    "deploy": "npm run build && npm run deploy:production",
+    "deploy:production": "echo 'Deploy to production infrastructure'",
+    "db:migrate": "cd backend && npm run db:migrate",
+    "db:seed": "cd backend && npm run db:seed",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && npm run lint"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "mobile",
+    "shared"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "@types/node": "^20.10.4",
+    "typescript": "^5.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "legal",
+    "lead-generation",
+    "attorney",
+    "lawyer",
+    "personal-injury",
+    "estate-planning",
+    "ai",
+    "crm"
+  ],
+  "author": "Law Trust Platform",
+  "license": "PROPRIETARY"
+}

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HayMax Pro - Precision Hay Production Platform</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary: #22c55e;
+            --primary-dark: #16a34a;
+            --secondary: #64748b;
+            --surface: #ffffff;
+            --surface-alt: #f8fafc;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-light: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--surface-alt);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-size: 1.25rem;
+        }
+
+        .map-container {
+            height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .weather-widget {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .weather-temp {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .weather-conditions {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .weather-detail h4 {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 0.25rem;
+        }
+
+        .weather-detail span {
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .chart-container {
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        .fields-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .field-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            background: var(--surface);
+        }
+
+        .field-info h4 {
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+
+        .field-info p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .field-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .close:hover {
+            color: var(--text);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .weather-details {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .beta-banner {
+            background: var(--warning);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="beta-banner">
+        🌾 HayMax Pro BETA - Precision Hay Production Platform - Join the Future of Farming! 🚜
+    </div>
+
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                🌾 HayMax Pro
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active" onclick="showDashboard()">Dashboard</a></li>
+                <li><a href="#" onclick="showFields()">Fields</a></li>
+                <li><a href="#" onclick="showAnalytics()">Analytics</a></li>
+                <li><a href="#" onclick="showData()">Data Entry</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <!-- Dashboard View -->
+        <div id="dashboard-view">
+            <div class="alert alert-info">
+                <strong>Welcome to HayMax Pro Beta!</strong> This is a working prototype. Add your fields using the map below and start tracking your hay production data.
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-fields">0</div>
+                    <div class="stat-label">Total Fields</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-acres">0</div>
+                    <div class="stat-label">Total Acres</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avg-yield">0</div>
+                    <div class="stat-label">Avg Tons/Acre</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="last-cut">--</div>
+                    <div class="stat-label">Last Cut</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Field Map</h3>
+                    <div id="map" class="map-container"></div>
+                    <div style="margin-top: 1rem; display: flex; gap: 1rem;">
+                        <button class="btn" onclick="toggleDrawing()">
+                            <span id="draw-btn-text">🖊️ Draw Field</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearFields()">Clear All</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Current Weather</h3>
+                    <div id="weather-widget">
+                        <div class="weather-widget">
+                            <div class="weather-temp">--°F</div>
+                            <div class="weather-conditions">Loading weather data...</div>
+                            <div class="weather-details">
+                                <div class="weather-detail">
+                                    <h4>Humidity</h4>
+                                    <span>--%</span>
+                                </div>
+                                <div class="weather-detail">
+                                    <h4>Wind</h4>
+                                    <span>-- mph</span>
+                                </div>
+                                <div class="weather-detail">
+                                    <h4>Forecast</h4>
+                                    <span>--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Recent Activity</h3>
+                <div id="activity-log">
+                    <p style="color: var(--text-light); text-align: center; padding: 2rem;">
+                        No activity yet. Start by drawing your first field on the map above!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fields View -->
+        <div id="fields-view" style="display: none;">
+            <div class="card">
+                <h3>My Fields</h3>
+                <div class="fields-list" id="fields-list">
+                    <p style="color: var(--text-light); text-align: center; padding: 2rem;">
+                        No fields added yet. Use the map to draw your field boundaries.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics View -->
+        <div id="analytics-view" style="display: none;">
+            <div class="card">
+                <h3>Yield Analytics</h3>
+                <div class="chart-container">
+                    <canvas id="yield-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Production Summary</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-production">0</div>
+                            <div class="stat-label">Total Tons</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="best-field">--</div>
+                            <div class="stat-label">Best Field</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Cutting Schedule</h3>
+                    <div id="cutting-recommendations">
+                        <p style="color: var(--text-light);">Add cutting data to see recommendations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Entry View -->
+        <div id="data-view" style="display: none;">
+            <div class="card">
+                <h3>Record Hay Cutting Data</h3>
+                <form id="cutting-form">
+                    <div class="form-group">
+                        <label for="field-select">Select Field</label>
+                        <select id="field-select">
+                            <option value="">Choose a field...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cut-date">Cut Date</label>
+                        <input type="date" id="cut-date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cut-number">Cut Number (1st, 2nd, 3rd cut)</label>
+                        <select id="cut-number" required>
+                            <option value="">Select cut...</option>
+                            <option value="1">1st Cut</option>
+                            <option value="2">2nd Cut</option>
+                            <option value="3">3rd Cut</option>
+                            <option value="4">4th Cut</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="yield">Yield (tons)</label>
+                        <input type="number" id="yield" step="0.1" placeholder="e.g., 45.5" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="moisture">Moisture %</label>
+                        <input type="number" id="moisture" step="0.1" placeholder="e.g., 12.5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">Notes (optional)</label>
+                        <input type="text" id="notes" placeholder="Weather conditions, quality, etc.">
+                    </div>
+                    
+                    <button type="submit" class="btn">📊 Record Cutting Data</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Recent Entries</h3>
+                <div id="recent-entries">
+                    <p style="color: var(--text-light); text-align: center; padding: 2rem;">
+                        No cutting data recorded yet.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Field Modal -->
+    <div id="field-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFieldModal()">&times;</span>
+            <h3>Name Your Field</h3>
+            <form id="field-form">
+                <div class="form-group">
+                    <label for="field-name">Field Name</label>
+                    <input type="text" id="field-name" placeholder="e.g., North Field, Back 40" required>
+                </div>
+                <div class="form-group">
+                    <label for="field-acres">Calculated Acres</label>
+                    <input type="number" id="field-acres" step="0.1" readonly>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeFieldModal()">Cancel</button>
+                    <button type="submit" class="btn">Save Field</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>

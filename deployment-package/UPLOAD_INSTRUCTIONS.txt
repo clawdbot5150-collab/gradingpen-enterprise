@@ -1,0 +1,28 @@
+🚀 GRADINGPEN.COM DEPLOYMENT PACKAGE
+===================================
+
+📁 Files in this package:
+- index.html (19KB) - DEPLOY THIS FILE
+- index-backup.html - Backup copy
+- UPLOAD_INSTRUCTIONS.txt - This file
+- SIMPLE_DEPLOYMENT.md - Full documentation
+
+🎯 UPLOAD STEPS:
+1. Login to Hostinger cPanel
+2. Open File Manager  
+3. Navigate to public_html/
+4. Backup current index.html (rename to index.html.old)
+5. Upload the new index.html from this package
+6. Visit https://gradingpen.com
+7. Force refresh: Ctrl+F5
+8. ✅ Test all buttons work!
+
+✅ FEATURES DEPLOYED:
+- Working email signup form
+- Functional contact buttons
+- Plan selection alerts
+- Mobile responsive design
+- Email integration
+- Form validation
+
+🔥 Your buttons will work!

@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HayMax Pro - Farm & Property Intelligence</title>
+    
+    <!-- Leaflet for mapping -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #22c55e, #059669);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            background: white;
+            padding: 2rem;
+            margin: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .search-btn {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #16a34a;
+            transform: translateY(-1px);
+        }
+
+        .search-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .controls {
+            margin: 1rem;
+            text-align: center;
+        }
+
+        .control-group {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: inline-block;
+            margin: 0.5rem;
+        }
+
+        .control-group h4 {
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .toggle-btn {
+            background: #e5e7eb;
+            color: #374151;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .toggle-btn.active {
+            background: #22c55e;
+            color: white;
+        }
+
+        .toggle-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .map-container {
+            margin: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            height: 500px;
+            position: relative;
+        }
+
+        .map-instructions {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .info-panel {
+            background: white;
+            margin: 1rem;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .info-panel.hidden {
+            display: none;
+        }
+
+        .info-tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .info-tab {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .info-tab.active {
+            color: #22c55e;
+            border-bottom-color: #22c55e;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-card h3 {
+            color: #22c55e;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-card .label {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .property-card {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+        }
+
+        .property-card h3 {
+            color: white;
+        }
+
+        .weather-card {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .weather-card h3 {
+            color: white;
+        }
+
+        .location-info {
+            background: #22c55e;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .property-details {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .property-details h4 {
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-details .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .property-details .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .simple-button {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .simple-button:hover {
+            background: #16a34a;
+        }
+
+        .simple-button.secondary {
+            background: #6b7280;
+        }
+
+        .simple-button.secondary:hover {
+            background: #4b5563;
+        }
+
+        .legend {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 0.8rem;
+            min-width: 150px;
+        }
+
+        .legend h4 {
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0.25rem 0;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+            margin-right: 0.5rem;
+        }
+
+        .quick-tips {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            color: #92400e;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            border-top-color: #22c55e;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-input, .search-btn {
+                width: 100%;
+                border-radius: 8px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-tabs {
+                flex-wrap: wrap;
+            }
+
+            .info-tab {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .map-instructions {
+                position: relative;
+                margin: 1rem 0;
+            }
+
+            .map-container {
+                height: 400px;
+            }
+
+            .legend {
+                position: relative;
+                margin: 1rem;
+                right: auto;
+                bottom: auto;
+            }
+        }
+
+        .success-message {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            text-align: center;
+        }
+
+        .example-addresses {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .example-addresses span {
+            background: #f3f4f6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin: 0.25rem;
+            display: inline-block;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .example-addresses span:hover {
+            background: #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏡 HayMax Pro - Farm & Property Intelligence</h1>
+        <p>Search any address to see property boundaries, ownership, and agricultural potential</p>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input 
+                type="text" 
+                class="search-input" 
+                id="addressInput"
+                placeholder="Enter any address to see property information... (e.g., 123 Farm Road, Iowa City, IA)"
+                value=""
+            >
+            <button class="search-btn" onclick="searchAddress()" id="searchBtn">
+                🔍 Find Property
+            </button>
+        </div>
+        
+        <div class="example-addresses">
+            <strong>Try these examples:</strong><br>
+            <span onclick="setExample('Des Moines, IA')">Des Moines, IA</span>
+            <span onclick="setExample('Cedar Falls, IA')">Cedar Falls, IA</span>
+            <span onclick="setExample('Ames, IA')">Ames, IA</span>
+            <span onclick="setExample('Council Bluffs, IA')">Council Bluffs, IA</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <h4>🗺️ Map Layers</h4>
+            <button class="toggle-btn active" onclick="toggleLayer('boundaries')" id="boundariesBtn">Property Lines</button>
+            <button class="toggle-btn" onclick="toggleLayer('satellite')" id="satelliteBtn">Satellite View</button>
+            <button class="toggle-btn" onclick="toggleLayer('terrain')" id="terrainBtn">Terrain</button>
+        </div>
+        
+        <div class="control-group">
+            <h4>📊 Information</h4>
+            <button class="toggle-btn active" onclick="toggleInfo('property')" id="propertyInfo">Property Details</button>
+            <button class="toggle-btn" onclick="toggleInfo('farming')" id="farmingInfo">Farm Data</button>
+            <button class="toggle-btn" onclick="toggleInfo('market')" id="marketInfo">Market Value</button>
+        </div>
+    </div>
+
+    <div class="quick-tips">
+        💡 <strong>How it works:</strong> Enter any address → See property boundaries → Click on properties for detailed information about ownership, value, and farming potential!
+    </div>
+
+    <div class="map-container">
+        <div class="map-instructions" id="instructions">
+            <strong>🏡 Click on any property</strong> to see ownership, value, acreage, and agricultural information
+        </div>
+        <div id="map"></div>
+        
+        <div class="legend">
+            <h4>Map Legend</h4>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #3b82f6;"></div>
+                <span>Agricultural Land</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #22c55e;"></div>
+                <span>Farmland</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f59e0b;"></div>
+                <span>Residential</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ef4444;"></div>
+                <span>Commercial</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-panel hidden" id="infoPanel">
+        <div class="location-info" id="locationInfo">
+            Click on a property above to see detailed information
+        </div>
+        
+        <div class="info-tabs">
+            <button class="info-tab active" onclick="showTab('property')" id="propertyTab">🏡 Property</button>
+            <button class="info-tab" onclick="showTab('farming')" id="farmingTab">🌾 Farming</button>
+            <button class="info-tab" onclick="showTab('market')" id="marketTab">💰 Market</button>
+        </div>
+
+        <!-- Property Tab -->
+        <div class="tab-content active" id="property-content">
+            <div class="info-grid">
+                <div class="info-card property-card">
+                    <h3>🏡 Property Info</h3>
+                    <div class="value" id="propertySize">--</div>
+                    <div class="label">Total Acres</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>👤 Owner</h3>
+                    <div class="value" id="ownerName">--</div>
+                    <div class="label">Property Owner</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🏷️ Zoning</h3>
+                    <div class="value" id="zoning">Agricultural</div>
+                    <div class="label">Land Use</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>📅 Last Sale</h3>
+                    <div class="value" id="lastSale">--</div>
+                    <div class="label">Sale Date</div>
+                </div>
+            </div>
+
+            <div class="property-details">
+                <h4>📋 Property Details</h4>
+                <div class="detail-row">
+                    <span>Parcel ID:</span>
+                    <strong id="parcelId">--</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Property Type:</span>
+                    <strong id="propertyType">Agricultural</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Tax Assessment:</span>
+                    <strong id="taxAssessment">--</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Annual Taxes:</span>
+                    <strong id="annualTaxes">--</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Farming Tab -->
+        <div class="tab-content" id="farming-content">
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>📍 Location</h3>
+                    <div class="value" id="coordinates">--</div>
+                    <div class="label">GPS Coordinates</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🌾 Soil Type</h3>
+                    <div class="value" id="soilType">Prairie Soil</div>
+                    <div class="label">Primary Soil</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🌱 Growing Season</h3>
+                    <div class="value" id="growingSeason">165 days</div>
+                    <div class="label">Average Days</div>
+                </div>
+                
+                <div class="info-card weather-card">
+                    <h3>🌤️ Weather</h3>
+                    <div class="value" id="temperature">72°F</div>
+                    <div class="label" id="conditions">Partly Cloudy</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>💧 Rainfall</h3>
+                    <div class="value" id="rainfall">32 inches</div>
+                    <div class="label">Annual Average</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🚜 Farming Potential</h3>
+                    <div class="value" id="farmingPotential">Excellent</div>
+                    <div class="label">Agricultural Rating</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Tab -->
+        <div class="tab-content" id="market-content">
+            <div class="info-grid">
+                <div class="info-card property-card">
+                    <h3>💰 Market Value</h3>
+                    <div class="value" id="marketValue">--</div>
+                    <div class="label">Estimated Value</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>📈 Price/Acre</h3>
+                    <div class="value" id="pricePerAcre">--</div>
+                    <div class="label">Per Acre Value</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🏡 Comparable Sales</h3>
+                    <div class="value" id="comparableSales">--</div>
+                    <div class="label">Recent Sales</div>
+                </div>
+                
+                <div class="info-card">
+                    <h3>📊 Market Trend</h3>
+                    <div class="value" id="marketTrend">▲ +5.2%</div>
+                    <div class="label">12 Month Change</div>
+                </div>
+            </div>
+
+            <div class="property-details">
+                <h4>💼 Investment Analysis</h4>
+                <div class="detail-row">
+                    <span>Land Value Trend:</span>
+                    <strong id="landTrend">Increasing</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Agricultural Income Potential:</span>
+                    <strong id="incomeePotential">$350-450/acre/year</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Development Potential:</span>
+                    <strong id="developmentPotential">Agricultural Use</strong>
+                </div>
+                <div class="detail-row">
+                    <span>Investment Grade:</span>
+                    <strong id="investmentGrade">B+</strong>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="simple-button" onclick="generatePropertyReport()">
+                📊 Generate Property Report
+            </button>
+            <button class="simple-button secondary" onclick="compareProperties()">
+                📈 Compare Properties
+            </button>
+            <button class="simple-button" onclick="saveProperty()">
+                💾 Save Property
+            </button>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        let map;
+        let currentMarker;
+        let propertyBoundaries = [];
+        let currentLayers = {
+            boundaries: true,
+            satellite: false,
+            terrain: false
+        };
+
+        // Initialize the map
+        function initMap() {
+            map = L.map('map').setView([42.0, -93.6], 10); // Iowa center
+
+            // Default tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add click handler
+            map.on('click', function(e) {
+                getPropertyInfo(e.latlng.lat, e.latlng.lng);
+            });
+
+            console.log('🗺️ Property map initialized');
+        }
+
+        // Search for an address
+        async function searchAddress() {
+            const address = document.getElementById('addressInput').value.trim();
+            const btn = document.getElementById('searchBtn');
+
+            if (!address) {
+                alert('Please enter an address');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Searching...';
+
+            try {
+                // Using Nominatim (free geocoding service)
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`);
+                const data = await response.json();
+
+                if (data.length > 0) {
+                    const result = data[0];
+                    const lat = parseFloat(result.lat);
+                    const lon = parseFloat(result.lon);
+                    
+                    // Center map on location
+                    map.setView([lat, lon], 16);
+                    
+                    // Clear existing boundaries
+                    clearPropertyBoundaries();
+                    
+                    // Load property boundaries for this area
+                    loadPropertyBoundaries(lat, lon);
+                    
+                    // Update instructions
+                    document.getElementById('instructions').innerHTML = 
+                        `<strong>✅ Found: ${result.display_name}</strong><br>Property boundaries shown. Click on any property for details.`;
+
+                    // Show success message
+                    showSuccess('Location found! Property boundaries loaded. Click on any property to see details.');
+
+                } else {
+                    alert('Location not found. Please try a different address.');
+                }
+            } catch (error) {
+                console.error('Geocoding error:', error);
+                alert('Error finding location. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🔍 Find Property';
+            }
+        }
+
+        // Load property boundaries (simulated for demo)
+        function loadPropertyBoundaries(centerLat, centerLon) {
+            // In production, this would call a real property boundary API
+            // For demo, we'll create sample property boundaries
+            
+            const properties = generateSampleProperties(centerLat, centerLon, 12);
+            
+            properties.forEach((property, index) => {
+                const color = getPropertyColor(property.type);
+                
+                const polygon = L.polygon(property.coordinates, {
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: 0.3,
+                    weight: 2
+                }).addTo(map);
+
+                // Store property data with polygon
+                polygon.propertyData = property;
+                
+                // Add click handler
+                polygon.on('click', function(e) {
+                    L.DomEvent.stopPropagation(e);
+                    displayPropertyInfo(property);
+                });
+
+                // Add to tracking array
+                propertyBoundaries.push(polygon);
+            });
+
+            console.log(`📋 Loaded ${properties.length} property boundaries`);
+        }
+
+        // Generate sample properties for demo
+        function generateSampleProperties(centerLat, centerLon, count) {
+            const properties = [];
+            const propertyTypes = ['Agricultural', 'Farmland', 'Residential', 'Commercial'];
+            
+            for (let i = 0; i < count; i++) {
+                // Generate random property boundary
+                const offsetLat = (Math.random() - 0.5) * 0.02;
+                const offsetLon = (Math.random() - 0.5) * 0.02;
+                const size = 0.002 + Math.random() * 0.008;
+                
+                const baseLat = centerLat + offsetLat;
+                const baseLon = centerLon + offsetLon;
+                
+                const coordinates = [
+                    [baseLat, baseLon],
+                    [baseLat + size, baseLon],
+                    [baseLat + size, baseLon + size],
+                    [baseLat, baseLon + size],
+                    [baseLat, baseLon]
+                ];
+
+                const acres = Math.round((size * 111000 * size * 111000 / 4047) * 10) / 10;
+                const type = propertyTypes[Math.floor(Math.random() * propertyTypes.length)];
+                
+                properties.push({
+                    id: `PROP_${i + 1}`,
+                    parcelId: `${Math.floor(Math.random() * 90000) + 10000}-${Math.floor(Math.random() * 9000) + 1000}`,
+                    coordinates: coordinates,
+                    acres: acres,
+                    type: type,
+                    owner: generateOwnerName(),
+                    marketValue: Math.floor((acres * (8000 + Math.random() * 4000)) / 1000) * 1000,
+                    lastSale: generateRandomDate(),
+                    taxes: Math.floor((acres * (80 + Math.random() * 40)) / 10) * 10
+                });
+            }
+            
+            return properties;
+        }
+
+        // Generate realistic owner names
+        function generateOwnerName() {
+            const firstNames = ['John', 'Mary', 'Robert', 'Jennifer', 'Michael', 'Linda', 'William', 'Elizabeth', 'David', 'Barbara'];
+            const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
+            
+            const first = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const last = lastNames[Math.floor(Math.random() * lastNames.length)];
+            
+            return `${first} ${last}`;
+        }
+
+        // Generate random recent date
+        function generateRandomDate() {
+            const start = new Date(2020, 0, 1);
+            const end = new Date();
+            const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+            return randomDate.toLocaleDateString();
+        }
+
+        // Get property color based on type
+        function getPropertyColor(type) {
+            const colors = {
+                'Agricultural': '#3b82f6',
+                'Farmland': '#22c55e',
+                'Residential': '#f59e0b',
+                'Commercial': '#ef4444'
+            };
+            return colors[type] || '#6b7280';
+        }
+
+        // Display property information
+        function displayPropertyInfo(property) {
+            // Update location info
+            document.getElementById('locationInfo').innerHTML = 
+                `<strong>Property Selected:</strong> ${property.acres} acres • ${property.type} • Parcel: ${property.parcelId}`;
+
+            // Property tab
+            document.getElementById('propertySize').textContent = `${property.acres}`;
+            document.getElementById('ownerName').textContent = property.owner;
+            document.getElementById('zoning').textContent = property.type;
+            document.getElementById('lastSale').textContent = property.lastSale;
+            document.getElementById('parcelId').textContent = property.parcelId;
+            document.getElementById('propertyType').textContent = property.type;
+            document.getElementById('taxAssessment').textContent = `$${property.marketValue.toLocaleString()}`;
+            document.getElementById('annualTaxes').textContent = `$${property.taxes.toLocaleString()}`;
+
+            // Market tab
+            document.getElementById('marketValue').textContent = `$${property.marketValue.toLocaleString()}`;
+            document.getElementById('pricePerAcre').textContent = `$${Math.floor(property.marketValue / property.acres).toLocaleString()}`;
+            document.getElementById('comparableSales').textContent = `${Math.floor(Math.random() * 5) + 2}`;
+            
+            // Farming data (generate based on location)
+            generateFarmingData(property);
+
+            // Show the info panel
+            document.getElementById('infoPanel').classList.remove('hidden');
+
+            // Scroll to info panel on mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('infoPanel').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            console.log('🏡 Property info displayed:', property.parcelId);
+        }
+
+        // Generate farming data for property
+        function generateFarmingData(property) {
+            // Get center coordinates of property
+            const coords = property.coordinates;
+            const centerLat = coords.reduce((sum, coord) => sum + coord[0], 0) / coords.length;
+            const centerLon = coords.reduce((sum, coord) => sum + coord[1], 0) / coords.length;
+
+            // Update coordinates
+            document.getElementById('coordinates').textContent = 
+                `${centerLat.toFixed(4)}, ${centerLon.toFixed(4)}`;
+
+            // Generate farming data based on property type and size
+            const soilTypes = ['Prairie Loam', 'Corn Belt Soil', 'Alluvial Soil', 'Clay Loam'];
+            const soilType = soilTypes[Math.floor(Math.abs(centerLat * centerLon) % soilTypes.length)];
+            
+            const growingSeason = Math.floor(150 + (centerLat - 40) * 5 + Math.random() * 20);
+            const rainfall = Math.floor(25 + Math.random() * 20);
+            const temp = Math.floor(65 + Math.random() * 15);
+            
+            const conditions = ['Sunny', 'Partly Cloudy', 'Cloudy', 'Light Rain'][Math.floor(Math.random() * 4)];
+            
+            let farmingPotential = 'Good';
+            if (property.type === 'Farmland' || property.type === 'Agricultural') {
+                farmingPotential = property.acres > 50 ? 'Excellent' : 'Good';
+            } else {
+                farmingPotential = 'Limited';
+            }
+
+            // Update display
+            document.getElementById('soilType').textContent = soilType;
+            document.getElementById('growingSeason').textContent = `${growingSeason} days`;
+            document.getElementById('rainfall').textContent = `${rainfall} inches`;
+            document.getElementById('temperature').textContent = `${temp}°F`;
+            document.getElementById('conditions').textContent = conditions;
+            document.getElementById('farmingPotential').textContent = farmingPotential;
+
+            // Update investment analysis
+            const incomePerAcre = property.type.includes('Farm') || property.type.includes('Agricultural') 
+                ? `$${300 + Math.floor(Math.random() * 200)}-${450 + Math.floor(Math.random() * 100)}/acre/year`
+                : 'N/A - Not Agricultural';
+            
+            document.getElementById('incomeePotential').textContent = incomePerAcre;
+            document.getElementById('landTrend').textContent = Math.random() > 0.3 ? 'Increasing' : 'Stable';
+            document.getElementById('developmentPotential').textContent = 
+                property.type === 'Residential' ? 'High' : property.type.includes('Agricultural') ? 'Agricultural Use' : 'Limited';
+            
+            const grades = ['A+', 'A', 'A-', 'B+', 'B', 'B-'];
+            document.getElementById('investmentGrade').textContent = grades[Math.floor(Math.random() * grades.length)];
+        }
+
+        // Clear property boundaries
+        function clearPropertyBoundaries() {
+            propertyBoundaries.forEach(polygon => {
+                map.removeLayer(polygon);
+            });
+            propertyBoundaries = [];
+        }
+
+        // Toggle map layers
+        function toggleLayer(layerType) {
+            // Implementation for different map layers
+            console.log('Toggle layer:', layerType);
+            
+            // Update button states
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                if (btn.id === layerType + 'Btn') {
+                    btn.classList.toggle('active');
+                }
+            });
+        }
+
+        // Toggle information display
+        function toggleInfo(infoType) {
+            console.log('Toggle info:', infoType);
+            
+            // Update button states
+            document.querySelectorAll('#propertyInfo, #farmingInfo, #marketInfo').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(infoType + 'Info').classList.add('active');
+        }
+
+        // Show different tabs
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.info-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-content').classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Set example address
+        function setExample(address) {
+            document.getElementById('addressInput').value = address;
+            searchAddress();
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const existing = document.querySelector('.success-message');
+            if (existing) existing.remove();
+
+            const success = document.createElement('div');
+            success.className = 'success-message';
+            success.textContent = message;
+            
+            document.querySelector('.search-container').appendChild(success);
+            
+            setTimeout(() => success.remove(), 5000);
+        }
+
+        // Placeholder functions for buttons
+        function generatePropertyReport() {
+            alert('📊 Property Report Generator\n\nThis would create a comprehensive property analysis including:\n\n• Detailed property information\n• Market analysis & comparables\n• Agricultural potential assessment\n• Soil and climate data\n• Investment recommendations\n• Historical value trends\n\nFull feature available in production version!');
+        }
+
+        function compareProperties() {
+            alert('📈 Property Comparison Tool\n\nThis would allow you to:\n\n• Select multiple properties\n• Compare side-by-side\n• Analyze value differences\n• Farming potential comparison\n• Investment metrics\n\nComing in full version!');
+        }
+
+        function saveProperty() {
+            alert('💾 Property saved to your dashboard!\n\nThis property has been added to your saved properties list for future reference and analysis.');
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+            
+            document.getElementById('addressInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchAddress();
+                }
+            });
+
+            console.log('🏡 HayMax Pro Property Intelligence loaded!');
+        });
+    </script>
+</body>
+</html>

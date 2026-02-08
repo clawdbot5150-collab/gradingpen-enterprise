@@ -1,0 +1,646 @@
+// AIGFNetwork Database Schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Management
+model User {
+  id                String            @id @default(cuid())
+  email             String            @unique
+  username          String?           @unique
+  passwordHash      String?
+  firstName         String?
+  lastName          String?
+  dateOfBirth       DateTime?
+  gender            Gender?
+  profilePicture    String?
+  bio               String?
+  location          String?
+  timezone          String?
+  language          String            @default("en")
+  
+  // Authentication
+  emailVerified     DateTime?
+  isActive          Boolean           @default(true)
+  lastLogin         DateTime?
+  loginAttempts     Int               @default(0)
+  lockedUntil       DateTime?
+  
+  // Preferences
+  preferences       UserPreferences?
+  
+  // Social Skills Data
+  currentLevel      Int               @default(1)
+  confidenceScore   Float             @default(0.0)
+  totalSessions     Int               @default(0)
+  totalMinutes      Int               @default(0)
+  streakDays        Int               @default(0)
+  lastActiveDate    DateTime?
+  
+  // Relationships
+  chatSessions      ChatSession[]
+  assessments       Assessment[]
+  progressRecords   ProgressRecord[]
+  achievements      UserAchievement[]
+  feedbackReports   FeedbackReport[]
+  dailyChallenges   DailyChallengeLog[]
+  subscriptions     Subscription[]
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  
+  @@map("users")
+}
+
+model UserPreferences {
+  id                    String    @id @default(cuid())
+  userId                String    @unique
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // AI Personality Preferences
+  preferredPersonalities String[] // Array of personality IDs
+  personalityDifficulty String   @default("adaptive") // adaptive, easy, medium, hard
+  
+  // Conversation Preferences
+  sessionDuration       Int      @default(15) // minutes
+  feedbackFrequency     String   @default("real-time") // real-time, mid-session, post-session
+  practiceAreas         String[] // dating, professional, social, etc.
+  
+  // Privacy & Safety
+  dataRetention         Int      @default(30) // days
+  shareAnalytics        Boolean  @default(true)
+  shareProgress         Boolean  @default(false)
+  
+  // Notifications
+  emailNotifications    Boolean  @default(true)
+  pushNotifications     Boolean  @default(true)
+  reminderTime          String?  // HH:mm format
+  
+  // Accessibility
+  fontSize              String   @default("medium")
+  contrast              String   @default("normal")
+  screenReader          Boolean  @default(false)
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@map("user_preferences")
+}
+
+// AI Personality System
+model AIPersonality {
+  id                  String              @id @default(cuid())
+  name                String
+  displayName         String
+  description         String
+  baseType            PersonalityType
+  
+  // Personality Traits (0.0 - 1.0 scale)
+  openness            Float               @default(0.5)
+  conscientiousness   Float               @default(0.5)
+  extraversion        Float               @default(0.5)
+  agreeableness       Float               @default(0.5)
+  neuroticism         Float               @default(0.5)
+  
+  // Communication Style
+  verbosity           String              @default("medium") // low, medium, high
+  formalityLevel      String              @default("casual") // formal, semi-formal, casual
+  emotionalExpression String              @default("moderate") // reserved, moderate, expressive
+  humorLevel          String              @default("light") // none, light, moderate, high
+  
+  // Background Information
+  age                 Int?
+  profession          String?
+  location            String?
+  interests           String[]            @default([])
+  background          Json?               // Additional background details
+  
+  // Model Configuration
+  preferredModel      String              @default("gpt-3.5-turbo")
+  systemPrompt        String
+  conversationStarters String[]          @default([])
+  
+  // Metadata
+  isActive            Boolean             @default(true)
+  difficultyLevel     Int                 @default(1) // 1-5 scale
+  popularity          Float               @default(0.0)
+  
+  // Relationships
+  chatSessions        ChatSession[]
+  scenarios           ScenarioPersonality[]
+  
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  
+  @@map("ai_personalities")
+}
+
+// Conversation Scenarios
+model Scenario {
+  id                  String                @id @default(cuid())
+  title               String
+  description         String
+  category            ScenarioCategory
+  difficultyLevel     Int                   @default(1) // 1-5 scale
+  duration            Int                   @default(15) // minutes
+  
+  // Setting Information
+  location            String
+  atmosphere          String
+  timeOfDay           String?
+  privacy             String                @default("public") // public, semi-private, private
+  
+  // Learning Objectives
+  objectives          String[]              @default([])
+  skillsFocused       String[]              @default([])
+  conversationStarters String[]             @default([])
+  challengePoints     String[]              @default([])
+  successMetrics      Json?
+  
+  // Configuration
+  isActive            Boolean               @default(true)
+  requiredLevel       Int                   @default(1)
+  estimatedXP         Int                   @default(100)
+  
+  // Relationships
+  personalities       ScenarioPersonality[]
+  chatSessions        ChatSession[]
+  
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  
+  @@map("scenarios")
+}
+
+model ScenarioPersonality {
+  id            String        @id @default(cuid())
+  scenarioId    String
+  personalityId String
+  scenario      Scenario      @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  personality   AIPersonality @relation(fields: [personalityId], references: [id], onDelete: Cascade)
+  
+  // Personality adaptation for this scenario
+  adaptedTraits Json?
+  customPrompt  String?
+  
+  @@unique([scenarioId, personalityId])
+  @@map("scenario_personalities")
+}
+
+// Chat Sessions and Conversations
+model ChatSession {
+  id                String            @id @default(cuid())
+  userId            String
+  scenarioId        String?
+  personalityId     String
+  
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scenario          Scenario?         @relation(fields: [scenarioId], references: [id])
+  personality       AIPersonality     @relation(fields: [personalityId], references: [id])
+  
+  // Session Configuration
+  sessionType       SessionType       @default(PRACTICE)
+  difficultyLevel   Int               @default(1)
+  duration          Int               @default(15) // planned duration in minutes
+  
+  // Session State
+  status            SessionStatus     @default(ACTIVE)
+  startedAt         DateTime          @default(now())
+  completedAt       DateTime?
+  actualDuration    Int?              // actual duration in minutes
+  
+  // Performance Metrics
+  messagesCount     Int               @default(0)
+  userWordsCount    Int               @default(0)
+  aiWordsCount      Int               @default(0)
+  pausesCount       Int               @default(0)
+  
+  // Scoring
+  overallRating     Float?            // 0.0 - 1.0
+  confidenceGain    Float?            // -1.0 - 1.0
+  skillsImprovement Json?
+  
+  // Relationships
+  messages          Message[]
+  feedbackReport    FeedbackReport?
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  
+  @@map("chat_sessions")
+}
+
+model Message {
+  id              String          @id @default(cuid())
+  sessionId       String
+  session         ChatSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  // Message Content
+  content         String
+  messageType     MessageType     @default(TEXT)
+  sender          MessageSender
+  
+  // AI Analysis
+  sentiment       String?         // positive, negative, neutral
+  confidence      Float?          // 0.0 - 1.0
+  topics          String[]        @default([])
+  emotions        String[]        @default([])
+  
+  // Conversation Flow
+  responseTime    Int?            // milliseconds
+  isFollowUp      Boolean         @default(false)
+  referencesMsg   String?         // ID of referenced message
+  
+  // Quality Metrics
+  wordCount       Int             @default(0)
+  questionCount   Int             @default(0)
+  isOpenEnded     Boolean?
+  
+  timestamp       DateTime        @default(now())
+  
+  @@map("messages")
+}
+
+// Assessment System
+model Assessment {
+  id                String              @id @default(cuid())
+  userId            String
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  assessmentType    AssessmentType
+  title             String
+  description       String?
+  
+  // Assessment Configuration
+  questionsCount    Int                 @default(0)
+  duration          Int?                // minutes
+  difficultyLevel   Int                 @default(1)
+  
+  // Scoring
+  totalScore        Float?              // 0.0 - 1.0
+  skillBreakdown    Json?               // Detailed skill scores
+  recommendations   String[]            @default([])
+  
+  // Metadata
+  status            AssessmentStatus    @default(PENDING)
+  startedAt         DateTime?
+  completedAt       DateTime?
+  retakeAllowed     Boolean             @default(true)
+  
+  // Relationships
+  responses         AssessmentResponse[]
+  
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  
+  @@map("assessments")
+}
+
+model AssessmentResponse {
+  id            String      @id @default(cuid())
+  assessmentId  String
+  assessment    Assessment  @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  
+  questionId    String
+  questionText  String
+  responseType  String      // multiple_choice, text, rating, boolean
+  response      Json        // Flexible response storage
+  score         Float?      // 0.0 - 1.0
+  
+  timestamp     DateTime    @default(now())
+  
+  @@map("assessment_responses")
+}
+
+// Progress Tracking
+model ProgressRecord {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  recordType      String      // daily, weekly, monthly, milestone
+  date            DateTime
+  
+  // Core Metrics
+  sessionsCount   Int         @default(0)
+  totalMinutes    Int         @default(0)
+  averageRating   Float?      // 0.0 - 1.0
+  confidenceScore Float?      // 0.0 - 1.0
+  
+  // Skill Progression
+  skillScores     Json?       // Detailed skill breakdown
+  improvementAreas String[]   @default([])
+  achievements    String[]    @default([])
+  
+  // Engagement Metrics
+  streakDays      Int         @default(0)
+  challengesCompleted Int     @default(0)
+  lessonsCompleted Int        @default(0)
+  
+  createdAt       DateTime    @default(now())
+  
+  @@unique([userId, recordType, date])
+  @@map("progress_records")
+}
+
+// Feedback System
+model FeedbackReport {
+  id                String      @id @default(cuid())
+  userId            String
+  sessionId         String      @unique
+  
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session           ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  // Overall Feedback
+  overallRating     Float       // 0.0 - 1.0
+  summary           String
+  
+  // Detailed Analysis
+  communicationScore Float       // 0.0 - 1.0
+  listeningScore     Float       // 0.0 - 1.0
+  empathyScore       Float       // 0.0 - 1.0
+  confidenceScore    Float       // 0.0 - 1.0
+  flowScore          Float       // 0.0 - 1.0
+  
+  // Specific Feedback
+  strengthsIdentified String[]   @default([])
+  improvementAreas   String[]    @default([])
+  specificSuggestions String[]   @default([])
+  nextSteps          String[]    @default([])
+  
+  // Behavioral Insights
+  speakingBalance    Float?      // 0.0 - 1.0 (0 = only listening, 1 = only speaking)
+  questionQuality    Float?      // 0.0 - 1.0
+  emotionalIntelligence Float?   // 0.0 - 1.0
+  
+  generatedAt        DateTime    @default(now())
+  
+  @@map("feedback_reports")
+}
+
+// Achievements and Gamification
+model Achievement {
+  id              String            @id @default(cuid())
+  name            String            @unique
+  title           String
+  description     String
+  category        AchievementCategory
+  difficulty      String            @default("bronze") // bronze, silver, gold, platinum
+  
+  // Requirements
+  requirements    Json              // Flexible requirements definition
+  xpReward        Int               @default(0)
+  
+  // Display
+  iconUrl         String?
+  badgeUrl        String?
+  color           String?
+  
+  isActive        Boolean           @default(true)
+  
+  // Relationships
+  userAchievements UserAchievement[]
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  
+  // Achievement Details
+  progress      Float       @default(0.0) // 0.0 - 1.0
+  isCompleted   Boolean     @default(false)
+  completedAt   DateTime?
+  
+  // Context
+  sessionId     String?     // Session where achievement was earned
+  metadata      Json?       // Additional achievement context
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+// Daily Challenges
+model DailyChallenge {
+  id              String                @id @default(cuid())
+  title           String
+  description     String
+  category        ChallengeCategory
+  difficulty      String                @default("beginner") // beginner, intermediate, advanced
+  
+  // Challenge Details
+  instructions    String[]              @default([])
+  timeRequired    Int?                  // minutes
+  location        String?               // where to do the challenge
+  xpReward        Int                   @default(10)
+  
+  // Reflection
+  reflectionQuestions String[]          @default([])
+  successCriteria String[]             @default([])
+  
+  isActive        Boolean               @default(true)
+  
+  // Relationships
+  logs            DailyChallengeLog[]
+  
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  
+  @@map("daily_challenges")
+}
+
+model DailyChallengeLog {
+  id            String          @id @default(cuid())
+  userId        String
+  challengeId   String
+  date          DateTime        @db.Date
+  
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge     DailyChallenge  @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  
+  // Completion Details
+  status        ChallengeStatus @default(ASSIGNED)
+  completedAt   DateTime?
+  
+  // User Feedback
+  difficultyRating Float?       // 1.0 - 5.0
+  enjoymentRating  Float?       // 1.0 - 5.0
+  confidenceGain   Float?       // 1.0 - 5.0
+  reflection       String?
+  
+  // Results
+  xpEarned      Int             @default(0)
+  
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  
+  @@unique([userId, challengeId, date])
+  @@map("daily_challenge_logs")
+}
+
+// Subscription and Billing
+model Subscription {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  planType        SubscriptionPlan
+  status          SubscriptionStatus @default(ACTIVE)
+  
+  // Billing
+  startDate       DateTime          @default(now())
+  endDate         DateTime?
+  renewsAt        DateTime?
+  cancelledAt     DateTime?
+  
+  // Features
+  maxSessions     Int?              // null for unlimited
+  prioritySupport Boolean           @default(false)
+  advancedAI      Boolean           @default(false)
+  exportData      Boolean           @default(false)
+  
+  // Payment
+  stripeSubscriptionId String?      @unique
+  stripePriceId   String?
+  
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  
+  @@map("subscriptions")
+}
+
+// Enums
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY
+  PREFER_NOT_TO_SAY
+  OTHER
+}
+
+enum PersonalityType {
+  EXTROVERT
+  INTROVERT
+  EMPATH
+  INTELLECTUAL
+  COMEDIAN
+  PROFESSIONAL
+  CREATIVE
+  MENTOR
+}
+
+enum ScenarioCategory {
+  FIRST_DATE
+  SOCIAL_EVENT
+  PROFESSIONAL
+  CASUAL_MEETUP
+  GROUP_CONVERSATION
+  CONFLICT_RESOLUTION
+  NETWORKING
+  ONLINE_DATING
+}
+
+enum SessionType {
+  PRACTICE
+  ASSESSMENT
+  CHALLENGE
+  FREE_TALK
+  GUIDED_LESSON
+}
+
+enum SessionStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+  TIMEOUT
+}
+
+enum MessageType {
+  TEXT
+  AUDIO
+  SYSTEM
+  FEEDBACK
+  HINT
+}
+
+enum MessageSender {
+  USER
+  AI
+  SYSTEM
+}
+
+enum AssessmentType {
+  BASELINE
+  PROGRESS_CHECK
+  SKILL_SPECIFIC
+  CERTIFICATION
+  FINAL_EVALUATION
+}
+
+enum AssessmentStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
+  CANCELLED
+}
+
+enum AchievementCategory {
+  CONVERSATION
+  CONFIDENCE
+  PROGRESS
+  SOCIAL_SKILLS
+  LEARNING
+  COMMUNITY
+  MILESTONE
+}
+
+enum ChallengeCategory {
+  DAILY_INTERACTION
+  CONFIDENCE_BUILDING
+  SKILL_PRACTICE
+  MINDFULNESS
+  REFLECTION
+  SOCIAL_EXPERIMENT
+}
+
+enum ChallengeStatus {
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+  EXPIRED
+}
+
+enum SubscriptionPlan {
+  FREE
+  BASIC
+  PREMIUM
+  PROFESSIONAL
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAUSED
+  TRIAL
+}

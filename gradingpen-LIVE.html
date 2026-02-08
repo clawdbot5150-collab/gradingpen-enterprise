@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradingPen - AI-Powered Educational Grading</title>
+    <meta name="description" content="AI-powered grading that saves teachers 80% of their time.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: white;
+            line-height: 1.6;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .signup-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 2rem 0;
+        }
+        
+        .signup-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        input:focus, select:focus {
+            outline: 3px solid #fff;
+            background: #fff;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #fff;
+            color: #667eea;
+        }
+        
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid #fff;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .features {
+            padding: 4rem 2rem;
+            background: #1a1a1a;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: #2a2a2a;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .pricing {
+            padding: 4rem 2rem;
+            background: #0a0a0a;
+            text-align: center;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 2rem auto;
+        }
+        
+        .pricing-card {
+            background: #2a2a2a;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid #333;
+        }
+        
+        .pricing-card.featured {
+            border-color: #667eea;
+            background: #1a1a3a;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 1rem 0;
+        }
+        
+        .success-message {
+            display: none;
+            background: #10b981;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .error-message {
+            display: none;
+            background: #ef4444;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            .signup-box {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section with Email Signup -->
+    <section class="hero">
+        <div class="container">
+            <h1>🎓 GradingPen</h1>
+            <p class="subtitle">AI-Powered Grading That Saves Teachers 80% of Their Time</p>
+            
+            <!-- Email Signup Form -->
+            <div class="signup-box">
+                <h2 class="signup-title">Start Your Free Trial Today</h2>
+                
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" required placeholder="your.email@school.edu">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="institution">School/Institution</label>
+                        <input type="text" id="institution" placeholder="Your school or university">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="role">Your Role</label>
+                        <select id="role">
+                            <option value="">Select your role</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="administrator">Administrator</option>
+                            <option value="professor">Professor</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin: 20px 0;">
+                        🚀 Start Free 14-Day Trial
+                    </button>
+                </form>
+                
+                <div id="successMessage" class="success-message">
+                    ✅ Success! Check your email for your free trial access.
+                </div>
+                
+                <div id="errorMessage" class="error-message">
+                    ❌ Please fill in all required fields.
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div style="margin-top: 2rem;">
+                <button onclick="scheduleDemo()" class="btn btn-secondary">
+                    📺 Watch Demo
+                </button>
+                <button onclick="contactSales()" class="btn btn-secondary">
+                    📧 Contact Sales
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div style="display: flex; justify-content: center; gap: 3rem; margin-top: 3rem; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold;">50K+</div>
+                    <div style="opacity: 0.8;">Essays Graded</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold;">2000+</div>
+                    <div style="opacity: 0.8;">Teachers</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold;">80%</div>
+                    <div style="opacity: 0.8;">Time Saved</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">
+                Powerful AI Grading Features
+            </h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Essay Grading</h3>
+                    <p>AI-powered evaluation with detailed feedback on grammar, structure, and critical thinking.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3>STEM Assessment</h3>
+                    <p>Advanced grading for math and science with step-by-step solution analysis.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Insights into student progress and class performance.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Plagiarism Detection</h3>
+                    <p>Advanced detection of plagiarism and AI-generated content.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Simple, Transparent Pricing</h2>
+            <p style="font-size: 1.2rem; opacity: 0.8; margin-bottom: 3rem;">Choose the plan that fits your needs</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Professional</h3>
+                    <div class="price">$149<span style="font-size: 1rem; opacity: 0.7;">/month</span></div>
+                    <ul style="text-align: left; margin: 1rem 0;">
+                        <li>✓ Up to 500 students</li>
+                        <li>✓ Advanced AI grading</li>
+                        <li>✓ Priority support</li>
+                    </ul>
+                    <button onclick="selectPlan('Professional', 149)" class="btn btn-primary" style="width: 100%;">
+                        Choose Professional
+                    </button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div style="background: #667eea; color: white; padding: 0.5rem; border-radius: 20px; margin-bottom: 1rem; font-size: 0.9rem; font-weight: bold;">
+                        MOST POPULAR
+                    </div>
+                    <h3>Enterprise</h3>
+                    <div class="price">$499<span style="font-size: 1rem; opacity: 0.7;">/month</span></div>
+                    <ul style="text-align: left; margin: 1rem 0;">
+                        <li>✓ Unlimited students</li>
+                        <li>✓ White-label customization</li>
+                        <li>✓ Advanced integrations</li>
+                        <li>✓ Dedicated support</li>
+                    </ul>
+                    <button onclick="selectPlan('Enterprise', 499)" class="btn btn-primary" style="width: 100%;">
+                        Choose Enterprise
+                    </button>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Academic</h3>
+                    <div class="price">Custom</div>
+                    <ul style="text-align: left; margin: 1rem 0;">
+                        <li>✓ Multi-institution</li>
+                        <li>✓ Research partnerships</li>
+                        <li>✓ Full API access</li>
+                        <li>✓ Custom integrations</li>
+                    </ul>
+                    <button onclick="contactSales()" class="btn btn-primary" style="width: 100%;">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #000; padding: 2rem; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h3>🎓 GradingPen</h3>
+            <p style="margin: 1rem 0; opacity: 0.7;">© 2026 GradingPen AI. Transforming education through intelligent assessment.</p>
+            
+            <div style="margin-top: 2rem;">
+                <button onclick="contactSupport()" class="btn btn-secondary">
+                    🆘 Contact Support
+                </button>
+                <button onclick="scheduleDemo()" class="btn btn-secondary">
+                    📅 Schedule Demo
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        console.log('🚀 GradingPen Simple - Initializing...');
+        
+        // Email Signup Form Handler
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            console.log('📝 Form submitted');
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const institution = document.getElementById('institution').value.trim();
+            const role = document.getElementById('role').value;
+            
+            // Validation
+            if (!name || !email) {
+                showError('Please fill in all required fields.');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address.');
+                return;
+            }
+            
+            console.log('✅ Form data:', { name, email, institution, role });
+            
+            // Simulate signup process
+            showSuccess();
+            
+            // In production, send to your backend:
+            // fetch('/api/signup', { method: 'POST', body: JSON.stringify({ name, email, institution, role }) })
+        });
+        
+        // Show Success Message
+        function showSuccess() {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('signupForm').reset();
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        }
+        
+        // Show Error Message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Plan Selection
+        function selectPlan(planName, price) {
+            console.log('💳 Plan selected:', planName, price);
+            
+            const message = `You selected the ${planName} plan!\n\nPrice: $${price}/month\n\nWould you like to start your free trial?`;
+            
+            if (confirm(message)) {
+                // Scroll to signup form
+                document.getElementById('signupForm').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('name').focus();
+            }
+        }
+        
+        // Schedule Demo
+        function scheduleDemo() {
+            console.log('📺 Scheduling demo');
+            
+            const subject = encodeURIComponent('Demo Request - GradingPen');
+            const body = encodeURIComponent(`Hello,
+
+I would like to schedule a demo of GradingPen for our institution.
+
+Please contact me to arrange a convenient time.
+
+Best regards`);
+            
+            window.location.href = `mailto:demo@gradingpen.com?subject=${subject}&body=${body}`;
+        }
+        
+        // Contact Sales
+        function contactSales() {
+            console.log('📧 Contacting sales');
+            
+            const subject = encodeURIComponent('Sales Inquiry - GradingPen');
+            const body = encodeURIComponent(`Hello,
+
+I am interested in GradingPen for our educational institution.
+
+Please contact me to discuss:
+- Pricing options
+- Implementation timeline
+- Custom requirements
+
+Best regards`);
+            
+            window.location.href = `mailto:sales@gradingpen.com?subject=${subject}&body=${body}`;
+        }
+        
+        // Contact Support
+        function contactSupport() {
+            console.log('🆘 Contacting support');
+            
+            const subject = encodeURIComponent('Support Request - GradingPen');
+            const body = encodeURIComponent(`Hello,
+
+I need assistance with GradingPen.
+
+Issue description:
+
+
+Please help me resolve this.
+
+Thank you!`);
+            
+            window.location.href = `mailto:support@gradingpen.com?subject=${subject}&body=${body}`;
+        }
+        
+        // Button Click Feedback
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                console.log('🔘 Button clicked:', this.textContent.trim());
+            });
+        });
+        
+        console.log('✅ GradingPen Simple - Ready!');
+        console.log('Functions available:');
+        console.log('- selectPlan(planName, price)');
+        console.log('- scheduleDemo()');
+        console.log('- contactSales()');
+        console.log('- contactSupport()');
+    </script>
+
+</body>
+</html>

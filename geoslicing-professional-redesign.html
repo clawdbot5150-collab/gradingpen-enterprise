@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoSlicing - World-Class Geospatial Intelligence Platform</title>
+    
+    <!-- Enhanced SEO -->
+    <meta name="description" content="Professional 3D geospatial intelligence platform with AI-powered analysis, real-time data streaming, and interactive visualization. Transform your spatial data into actionable insights.">
+    <meta name="keywords" content="geospatial intelligence, 3D mapping, GIS analysis, spatial data visualization, AI geospatial, professional mapping solutions, real-time geographic data">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="GeoSlicing">
+    
+    <!-- Open Graph Enhanced -->
+    <meta property="og:title" content="GeoSlicing - Professional 3D Geospatial Intelligence">
+    <meta property="og:description" content="Transform spatial data into actionable insights with our world-class 3D visualization and AI-powered analysis platform">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geoslicing.com">
+    <meta property="og:image" content="https://geoslicing.com/assets/og-image.jpg">
+    <meta property="og:site_name" content="GeoSlicing">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GeoSlicing - World-Class Geospatial Intelligence">
+    <meta name="twitter:description" content="Professional 3D geospatial platform with AI-powered analysis and real-time visualization">
+    <meta name="twitter:image" content="https://geoslicing.com/assets/twitter-card.jpg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Essential Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Mapbox for Enhanced Mapping -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    
+    <style>
+        /* Enhanced Professional Variables */
+        :root {
+            /* Core Brand Colors */
+            --ocean-blue: #0A2463;
+            --ocean-blue-light: #1e3a8a;
+            --ocean-blue-dark: #051529;
+            --cyan: #00B4D8;
+            --cyan-light: #0ea5e9;
+            --cyan-dark: #0891b2;
+            --amber: #F77F00;
+            --amber-light: #fb923c;
+            --amber-dark: #c2410c;
+            
+            /* Extended Professional Palette */
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --gray-950: #020617;
+            
+            /* Success/Warning/Error */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: var(--cyan);
+            
+            /* Typography Scale */
+            --font-heading: 'Inter', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            /* Typography Scale */
+            --text-xs: 0.75rem;    /* 12px */
+            --text-sm: 0.875rem;   /* 14px */
+            --text-base: 1rem;     /* 16px */
+            --text-lg: 1.125rem;   /* 18px */
+            --text-xl: 1.25rem;    /* 20px */
+            --text-2xl: 1.5rem;    /* 24px */
+            --text-3xl: 1.875rem;  /* 30px */
+            --text-4xl: 2.25rem;   /* 36px */
+            --text-5xl: 3rem;      /* 48px */
+            --text-6xl: 3.75rem;   /* 60px */
+            --text-7xl: 4.5rem;    /* 72px */
+            --text-8xl: 6rem;      /* 96px */
+            
+            /* Spacing System (8px grid) */
+            --space-0: 0;
+            --space-1: 0.5rem;     /* 8px */
+            --space-2: 1rem;       /* 16px */
+            --space-3: 1.5rem;     /* 24px */
+            --space-4: 2rem;       /* 32px */
+            --space-5: 2.5rem;     /* 40px */
+            --space-6: 3rem;       /* 48px */
+            --space-8: 4rem;       /* 64px */
+            --space-10: 5rem;      /* 80px */
+            --space-12: 6rem;      /* 96px */
+            --space-16: 8rem;      /* 128px */
+            --space-20: 10rem;     /* 160px */
+            
+            /* Enhanced Animations */
+            --transition-fast: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 600ms cubic-bezier(0.4, 0, 0.2, 1);
+            --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            
+            /* Professional Shadows */
+            --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            --gradient-secondary: linear-gradient(135deg, var(--cyan), var(--amber));
+            --gradient-hero: linear-gradient(135deg, var(--ocean-blue-dark) 0%, var(--ocean-blue) 50%, var(--cyan-dark) 100%);
+            --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            
+            /* Border Radius */
+            --radius-sm: 0.25rem;   /* 4px */
+            --radius: 0.5rem;       /* 8px */
+            --radius-lg: 0.75rem;   /* 12px */
+            --radius-xl: 1rem;      /* 16px */
+            --radius-2xl: 1.5rem;   /* 24px */
+            --radius-full: 9999px;
+            
+            /* Z-Index Scale */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+            --z-toast: 1080;
+        }
+        
+        /* Enhanced Reset & Base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--gray-800);
+            background: var(--gray-50);
+            overflow-x: hidden;
+        }
+        
+        /* Enhanced Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.025em;
+            margin: 0;
+        }
+        
+        h1 { font-size: var(--text-5xl); }
+        h2 { font-size: var(--text-4xl); }
+        h3 { font-size: var(--text-3xl); }
+        h4 { font-size: var(--text-2xl); }
+        h5 { font-size: var(--text-xl); }
+        h6 { font-size: var(--text-lg); }
+        
+        p {
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        /* Professional Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+        
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--text-xl);
+            font-weight: 800;
+            color: var(--ocean-blue);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--text-xl);
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--space-6);
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: var(--text-sm);
+            letter-spacing: -0.01em;
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--ocean-blue);
+            background: var(--gray-100);
+        }
+        
+        .nav-links a.active {
+            color: var(--ocean-blue);
+            font-weight: 600;
+        }
+        
+        .nav-cta {
+            background: var(--gradient-primary);
+            color: white !important;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+        
+        .nav-cta:hover {
+            background: var(--gradient-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* Mobile Navigation */
+        .nav-mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--space-2);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+        
+        .nav-mobile-toggle:hover {
+            background: var(--gray-100);
+        }
+        
+        .nav-mobile-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--gray-700);
+            border-radius: 1px;
+            transition: var(--transition);
+        }
+        
+        .nav-mobile-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .nav-mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .nav-mobile-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+        
+        .nav-mobile {
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            transform: translateY(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: var(--z-dropdown);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .nav-mobile.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .nav-mobile-links {
+            padding: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-1);
+        }
+        
+        .nav-mobile-links a {
+            padding: var(--space-3) var(--space-4);
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+        }
+        
+        .nav-mobile-links a:hover {
+            background: var(--gray-100);
+            color: var(--ocean-blue);
+        }
+        
+        /* Hero Section - World-Class */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-4);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-8);
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-content {
+            color: white;
+        }
+        
+        .hero-title {
+            font-size: var(--text-6xl);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: var(--space-4);
+            background: linear-gradient(135deg, #ffffff, #e0f2fe, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: var(--text-xl);
+            line-height: 1.6;
+            margin-bottom: var(--space-6);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-xl);
+            font-weight: 600;
+            font-size: var(--text-base);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-secondary);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-2xl);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* 3D Globe Container */
+        .hero-visual {
+            position: relative;
+            height: 500px;
+        }
+        
+        .globe-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .globe-stats {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: var(--space-3);
+            border-radius: var(--radius-lg);
+            color: white;
+            z-index: 10;
+        }
+        
+        .globe-controls {
+            position: absolute;
+            bottom: var(--space-4);
+            left: var(--space-4);
+            display: flex;
+            gap: var(--space-2);
+            z-index: 10;
+        }
+        
+        .globe-control-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .globe-control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-hero);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s, visibility 0.8s;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: var(--space-4);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: var(--text-lg);
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: var(--space-6);
+            }
+            
+            .hero-title {
+                font-size: var(--text-5xl);
+            }
+            
+            .hero-visual {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-mobile-toggle {
+                display: flex;
+            }
+            
+            .hero-title {
+                font-size: var(--text-4xl);
+            }
+            
+            .hero-subtitle {
+                font-size: var(--text-lg);
+            }
+            
+            .hero-visual {
+                height: 300px;
+            }
+            
+            .btn {
+                padding: var(--space-2) var(--space-4);
+                font-size: var(--text-sm);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 var(--space-3);
+            }
+            
+            .hero-container {
+                padding: 0 var(--space-3);
+            }
+            
+            .hero-title {
+                font-size: var(--text-3xl);
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Additional sections will continue... */
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Initializing GeoSlicing Platform...</div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">🌍</div>
+                <span>GeoSlicing</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#demo" class="nav-cta">Start Free Trial</a></li>
+            </ul>
+            
+            <button class="nav-mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <div class="nav-mobile" id="mobileNav">
+            <div class="nav-mobile-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#solutions">Solutions</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#about">About</a>
+                <a href="#resources">Resources</a>
+                <a href="#contact">Contact</a>
+                <a href="#demo">Start Free Trial</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Transform Spatial Data Into Actionable Intelligence</h1>
+                <p class="hero-subtitle">
+                    Experience the future of geospatial analysis with our professional-grade 3D visualization platform, 
+                    AI-powered insights, and real-time data streaming capabilities.
+                </p>
+                <div class="hero-cta">
+                    <a href="#demo" class="btn btn-primary">
+                        🚀 Start Free Trial
+                    </a>
+                    <a href="#features" class="btn btn-secondary">
+                        🎬 Watch Demo
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="globe-container">
+                    <canvas id="globeCanvas"></canvas>
+                    <div class="globe-stats">
+                        <div style="font-size: var(--text-sm); opacity: 0.8;">Live Data Points</div>
+                        <div style="font-size: var(--text-2xl); font-weight: 700;" id="liveDataCount">2,847,392</div>
+                    </div>
+                    <div class="globe-controls">
+                        <button class="globe-control-btn" title="Rotate" id="globeRotate">↻</button>
+                        <button class="globe-control-btn" title="Zoom" id="globeZoom">🔍</button>
+                        <button class="globe-control-btn" title="Reset" id="globeReset">⌂</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- More sections will be added in subsequent parts... -->
+    
+    <script>
+        // Enhanced JavaScript functionality
+        class GeoSlicingApp {
+            constructor() {
+                this.globe = null;
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.animationId = null;
+                
+                this.init();
+            }
+            
+            async init() {
+                this.setupLoading();
+                this.setupNavigation();
+                await this.init3DGlobe();
+                this.setupAnimations();
+                this.hideLoading();
+            }
+            
+            setupLoading() {
+                // Show loading for minimum 2 seconds for professional feel
+                this.loadingTimeout = setTimeout(() => {
+                    this.hideLoading();
+                }, 2000);
+            }
+            
+            hideLoading() {
+                const loadingScreen = document.getElementById('loadingScreen');
+                loadingScreen.classList.add('hidden');
+                clearTimeout(this.loadingTimeout);
+            }
+            
+            setupNavigation() {
+                const nav = document.getElementById('mainNav');
+                const mobileToggle = document.getElementById('mobileToggle');
+                const mobileNav = document.getElementById('mobileNav');
+                
+                // Scroll effect
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        nav.classList.add('scrolled');
+                    } else {
+                        nav.classList.remove('scrolled');
+                    }
+                });
+                
+                // Mobile menu toggle
+                mobileToggle.addEventListener('click', () => {
+                    mobileToggle.classList.toggle('active');
+                    mobileNav.classList.toggle('active');
+                });
+                
+                // Smooth scrolling for navigation links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                            // Close mobile menu if open
+                            mobileToggle.classList.remove('active');
+                            mobileNav.classList.remove('active');
+                        }
+                    });
+                });
+            }
+            
+            async init3DGlobe() {
+                const canvas = document.getElementById('globeCanvas');
+                const container = canvas.parentElement;
+                
+                // Set up Three.js scene
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+                this.renderer = new THREE.WebGLRenderer({ 
+                    canvas: canvas, 
+                    antialias: true, 
+                    alpha: true 
+                });
+                
+                this.renderer.setSize(container.offsetWidth, container.offsetHeight);
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                
+                // Create globe
+                const geometry = new THREE.SphereGeometry(2, 64, 32);
+                const material = new THREE.ShaderMaterial({
+                    uniforms: {
+                        time: { value: 0 },
+                        opacity: { value: 0.8 }
+                    },
+                    vertexShader: `
+                        varying vec2 vUv;
+                        varying vec3 vPosition;
+                        void main() {
+                            vUv = uv;
+                            vPosition = position;
+                            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                        }
+                    `,
+                    fragmentShader: `
+                        uniform float time;
+                        uniform float opacity;
+                        varying vec2 vUv;
+                        varying vec3 vPosition;
+                        
+                        void main() {
+                            vec2 uv = vUv;
+                            
+                            // Create animated grid
+                            float grid = sin(uv.x * 20.0 + time) * sin(uv.y * 15.0 + time * 0.5);
+                            grid = smoothstep(0.0, 0.1, abs(grid));
+                            
+                            // Ocean-like color
+                            vec3 oceanColor = vec3(0.04, 0.14, 0.39); // Ocean blue
+                            vec3 landColor = vec3(0.0, 0.71, 0.85);   // Cyan
+                            
+                            vec3 color = mix(oceanColor, landColor, grid);
+                            
+                            gl_FragColor = vec4(color, opacity);
+                        }
+                    `,
+                    transparent: true
+                });
+                
+                this.globe = new THREE.Mesh(geometry, material);
+                this.scene.add(this.globe);
+                
+                // Add particles around globe
+                this.createParticles();
+                
+                // Position camera
+                this.camera.position.z = 6;
+                
+                // Add lighting
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+                this.scene.add(ambientLight);
+                
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(1, 1, 1);
+                this.scene.add(directionalLight);
+                
+                // Start animation
+                this.animate();
+                
+                // Handle resize
+                window.addEventListener('resize', () => this.handleResize());
+                
+                // Globe controls
+                document.getElementById('globeRotate').addEventListener('click', () => {
+                    this.isRotating = !this.isRotating;
+                });
+                
+                document.getElementById('globeZoom').addEventListener('click', () => {
+                    gsap.to(this.camera.position, {
+                        z: this.camera.position.z > 4 ? 8 : 4,
+                        duration: 1,
+                        ease: "power2.inOut"
+                    });
+                });
+                
+                document.getElementById('globeReset').addEventListener('click', () => {
+                    gsap.to(this.camera.position, {
+                        x: 0, y: 0, z: 6,
+                        duration: 1,
+                        ease: "power2.inOut"
+                    });
+                    gsap.to(this.globe.rotation, {
+                        x: 0, y: 0, z: 0,
+                        duration: 1,
+                        ease: "power2.inOut"
+                    });
+                });
+            }
+            
+            createParticles() {
+                const particleGeometry = new THREE.BufferGeometry();
+                const particleCount = 1000;
+                const positions = new Float32Array(particleCount * 3);
+                
+                for (let i = 0; i < particleCount * 3; i++) {
+                    positions[i] = (Math.random() - 0.5) * 20;
+                }
+                
+                particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                
+                const particleMaterial = new THREE.PointsMaterial({
+                    color: 0x00b4d8,
+                    size: 0.05,
+                    transparent: true,
+                    opacity: 0.6
+                });
+                
+                this.particles = new THREE.Points(particleGeometry, particleMaterial);
+                this.scene.add(this.particles);
+            }
+            
+            animate() {
+                this.animationId = requestAnimationFrame(() => this.animate());
+                
+                const time = performance.now() * 0.001;
+                
+                // Update globe shader
+                if (this.globe.material.uniforms) {
+                    this.globe.material.uniforms.time.value = time;
+                }
+                
+                // Rotate globe
+                if (this.isRotating !== false) {
+                    this.globe.rotation.y += 0.005;
+                }
+                
+                // Animate particles
+                if (this.particles) {
+                    this.particles.rotation.y += 0.001;
+                }
+                
+                this.renderer.render(this.scene, this.camera);
+                
+                // Update live data counter
+                this.updateLiveDataCounter();
+            }
+            
+            updateLiveDataCounter() {
+                const counter = document.getElementById('liveDataCount');
+                if (counter && Math.random() < 0.01) { // Update occasionally
+                    const current = parseInt(counter.textContent.replace(/,/g, ''));
+                    const newValue = current + Math.floor(Math.random() * 100);
+                    counter.textContent = newValue.toLocaleString();
+                }
+            }
+            
+            handleResize() {
+                const canvas = document.getElementById('globeCanvas');
+                const container = canvas.parentElement;
+                
+                this.camera.aspect = container.offsetWidth / container.offsetHeight;
+                this.camera.updateProjectionMatrix();
+                this.renderer.setSize(container.offsetWidth, container.offsetHeight);
+            }
+            
+            setupAnimations() {
+                // Register ScrollTrigger
+                gsap.registerPlugin(ScrollTrigger);
+                
+                // Hero animations
+                gsap.from(".hero-content > *", {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    stagger: 0.2,
+                    ease: "power3.out",
+                    delay: 0.5
+                });
+                
+                gsap.from(".hero-visual", {
+                    scale: 0.8,
+                    opacity: 0,
+                    duration: 1.5,
+                    ease: "power3.out",
+                    delay: 0.8
+                });
+            }
+        }
+        
+        // Initialize app when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new GeoSlicingApp();
+        });
+    </script>
+</body>
+</html>

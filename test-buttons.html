@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head><title>Button Test</title></head>
+<body style="padding: 20px; font-family: Arial;">
+<h1>🧪 GradingPen Button Test</h1>
+<p>Testing button functionality before deployment...</p>
+
+<div style="margin: 20px 0;">
+<h3>Test Results:</h3>
+<div id="results"></div>
+</div>
+
+<script>
+// Load the main page in an iframe
+const iframe = document.createElement('iframe');
+iframe.src = 'index.html';
+iframe.style.width = '100%';
+iframe.style.height = '800px';
+iframe.style.border = '1px solid #ccc';
+document.body.appendChild(iframe);
+
+// Test button functions
+iframe.onload = function() {
+    const results = document.getElementById('results');
+    
+    try {
+        const iframeWindow = iframe.contentWindow;
+        
+        // Test if functions exist
+        const tests = [
+            { name: 'openTrial', exists: typeof iframeWindow.openTrial === 'function' },
+            { name: 'openDemo', exists: typeof iframeWindow.openDemo === 'function' },
+            { name: 'selectPlan', exists: typeof iframeWindow.selectPlan === 'function' },
+            { name: 'contactSales', exists: typeof iframeWindow.contactSales === 'function' },
+            { name: 'contactSupport', exists: typeof iframeWindow.contactSupport === 'function' },
+            { name: 'closeModal', exists: typeof iframeWindow.closeModal === 'function' }
+        ];
+        
+        let html = '<ul>';
+        let allPassed = true;
+        
+        tests.forEach(test => {
+            const status = test.exists ? '✅ PASS' : '❌ FAIL';
+            const color = test.exists ? 'green' : 'red';
+            html += `<li style="color: ${color}">${status} - ${test.name}() function</li>`;
+            if (!test.exists) allPassed = false;
+        });
+        
+        html += '</ul>';
+        
+        if (allPassed) {
+            html += '<p style="color: green; font-weight: bold;">🎉 ALL TESTS PASSED! Ready to deploy!</p>';
+        } else {
+            html += '<p style="color: red; font-weight: bold;">❌ Some tests failed. Check the code.</p>';
+        }
+        
+        results.innerHTML = html;
+        
+    } catch (error) {
+        results.innerHTML = '<p style="color: orange;">⚠️ Cannot access iframe (normal in file:// mode). Deploy to test fully.</p>';
+    }
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HayMax Pro - Simple Field Lookup</title>
+    
+    <!-- Leaflet for mapping -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+        }
+
+        .header {
+            background: #22c55e;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            background: white;
+            padding: 2rem;
+            margin: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+
+        .search-btn {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #16a34a;
+            transform: translateY(-1px);
+        }
+
+        .search-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .map-container {
+            margin: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            height: 500px;
+            position: relative;
+        }
+
+        .map-instructions {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .info-panel {
+            background: white;
+            margin: 1rem;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .info-panel.hidden {
+            display: none;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .info-card h3 {
+            color: #22c55e;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-card .label {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .weather-card {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            text-align: center;
+        }
+
+        .weather-card h3 {
+            color: white;
+        }
+
+        .location-info {
+            background: #22c55e;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .simple-button {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .simple-button:hover {
+            background: #16a34a;
+        }
+
+        .quick-tips {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            color: #92400e;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            text-align: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            border-top-color: #22c55e;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-input, .search-btn {
+                width: 100%;
+                border-radius: 8px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map-instructions {
+                position: relative;
+                margin: 1rem 0;
+            }
+
+            .map-container {
+                height: 400px;
+            }
+        }
+
+        .success-message {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem;
+            text-align: center;
+        }
+
+        .example-addresses {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .example-addresses span {
+            background: #f3f4f6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin: 0.25rem;
+            display: inline-block;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .example-addresses span:hover {
+            background: #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌾 HayMax Pro Field Lookup</h1>
+        <p>Type your farm address and get instant field information</p>
+    </div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input 
+                type="text" 
+                class="search-input" 
+                id="addressInput"
+                placeholder="Enter your farm address... (e.g., 123 Farm Road, Iowa City, IA)"
+                value=""
+            >
+            <button class="search-btn" onclick="searchAddress()" id="searchBtn">
+                🔍 Find My Farm
+            </button>
+        </div>
+        
+        <div class="example-addresses">
+            <strong>Try these examples:</strong><br>
+            <span onclick="setExample('Des Moines, IA')">Des Moines, IA</span>
+            <span onclick="setExample('Cedar Falls, IA')">Cedar Falls, IA</span>
+            <span onclick="setExample('Ames, IA')">Ames, IA</span>
+            <span onclick="setExample('Council Bluffs, IA')">Council Bluffs, IA</span>
+        </div>
+    </div>
+
+    <div class="quick-tips">
+        💡 <strong>How it works:</strong> Enter your address → Click "Find My Farm" → Click anywhere on your fields to get detailed information!
+    </div>
+
+    <div class="map-container">
+        <div class="map-instructions" id="instructions">
+            <strong>📍 Click anywhere on the map</strong> to get field information for that location
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <div class="info-panel hidden" id="infoPanel">
+        <div class="location-info" id="locationInfo">
+            Click on a field location above to see detailed information
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>📍 Location</h3>
+                <div class="value" id="coordinates">--</div>
+                <div class="label">GPS Coordinates</div>
+            </div>
+            
+            <div class="info-card">
+                <h3>🌾 Soil Type</h3>
+                <div class="value" id="soilType">Prairie Soil</div>
+                <div class="label">Estimated Type</div>
+            </div>
+            
+            <div class="info-card">
+                <h3>🌱 Growing Season</h3>
+                <div class="value" id="growingSeason">165 days</div>
+                <div class="label">Average Days</div>
+            </div>
+            
+            <div class="info-card weather-card">
+                <h3>🌤️ Weather Today</h3>
+                <div class="value" id="temperature">72°F</div>
+                <div class="label" id="conditions">Partly Cloudy</div>
+            </div>
+            
+            <div class="info-card">
+                <h3>💧 Rainfall</h3>
+                <div class="value" id="rainfall">32 inches</div>
+                <div class="label">Annual Average</div>
+            </div>
+            
+            <div class="info-card">
+                <h3>🚜 Hay Potential</h3>
+                <div class="value" id="hayPotential">Good</div>
+                <div class="label">Field Rating</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="simple-button" onclick="getDetailedReport()">
+                📊 Get Full Farm Report
+            </button>
+            <button class="simple-button" onclick="saveLocation()">
+                💾 Save This Location
+            </button>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        let map;
+        let currentMarker;
+
+        // Initialize the map
+        function initMap() {
+            map = L.map('map').setView([42.0, -93.6], 7); // Iowa center
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add click handler
+            map.on('click', function(e) {
+                getFieldInfo(e.latlng.lat, e.latlng.lng);
+            });
+
+            console.log('🗺️ Simple map initialized');
+        }
+
+        // Search for an address
+        async function searchAddress() {
+            const address = document.getElementById('addressInput').value.trim();
+            const btn = document.getElementById('searchBtn');
+
+            if (!address) {
+                alert('Please enter an address');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Searching...';
+
+            try {
+                // Using Nominatim (free geocoding service)
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`);
+                const data = await response.json();
+
+                if (data.length > 0) {
+                    const result = data[0];
+                    const lat = parseFloat(result.lat);
+                    const lon = parseFloat(result.lon);
+                    
+                    // Center map on location
+                    map.setView([lat, lon], 14);
+                    
+                    // Add a marker
+                    if (currentMarker) {
+                        map.removeLayer(currentMarker);
+                    }
+                    
+                    currentMarker = L.marker([lat, lon])
+                        .addTo(map)
+                        .bindPopup(`📍 ${result.display_name}`)
+                        .openPopup();
+
+                    // Update instructions
+                    document.getElementById('instructions').innerHTML = 
+                        `<strong>✅ Found: ${result.display_name}</strong><br>Click anywhere on the map to get field information`;
+
+                    // Show success message
+                    showSuccess('Location found! Click on your fields to get detailed information.');
+
+                } else {
+                    alert('Location not found. Please try a different address.');
+                }
+            } catch (error) {
+                console.error('Geocoding error:', error);
+                alert('Error finding location. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🔍 Find My Farm';
+            }
+        }
+
+        // Get field information for clicked location
+        function getFieldInfo(lat, lng) {
+            // Remove previous marker
+            if (currentMarker) {
+                map.removeLayer(currentMarker);
+            }
+
+            // Add new marker
+            currentMarker = L.marker([lat, lng])
+                .addTo(map)
+                .bindPopup('📊 Getting field data...')
+                .openPopup();
+
+            // Update coordinates
+            document.getElementById('coordinates').textContent = 
+                `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+
+            // Generate sample field data based on location
+            generateFieldData(lat, lng);
+
+            // Show the info panel
+            document.getElementById('infoPanel').classList.remove('hidden');
+            document.getElementById('locationInfo').innerHTML = 
+                `<strong>Field Information for:</strong> ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+
+            // Scroll to info panel on mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('infoPanel').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Generate realistic field data based on location
+        function generateFieldData(lat, lng) {
+            // Simulate different data based on location
+            const soilTypes = ['Prairie Loam', 'Corn Belt Soil', 'Alluvial Soil', 'Clay Loam'];
+            const soilType = soilTypes[Math.floor(Math.abs(lat * lng) % soilTypes.length)];
+            
+            const growingSeason = Math.floor(150 + (lat - 40) * 5 + Math.random() * 20);
+            const rainfall = Math.floor(25 + Math.random() * 20);
+            const temp = Math.floor(65 + Math.random() * 15);
+            
+            const conditions = ['Sunny', 'Partly Cloudy', 'Cloudy', 'Light Rain'][Math.floor(Math.random() * 4)];
+            const hayPotential = ['Excellent', 'Good', 'Fair'][Math.floor((rainfall + temp - 90) / 10)];
+
+            // Update display
+            document.getElementById('soilType').textContent = soilType;
+            document.getElementById('growingSeason').textContent = `${growingSeason} days`;
+            document.getElementById('rainfall').textContent = `${rainfall} inches`;
+            document.getElementById('temperature').textContent = `${temp}°F`;
+            document.getElementById('conditions').textContent = conditions;
+            document.getElementById('hayPotential').textContent = hayPotential || 'Good';
+
+            console.log('📊 Field data generated for:', lat, lng);
+        }
+
+        // Set example address
+        function setExample(address) {
+            document.getElementById('addressInput').value = address;
+            searchAddress();
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const existing = document.querySelector('.success-message');
+            if (existing) existing.remove();
+
+            const success = document.createElement('div');
+            success.className = 'success-message';
+            success.textContent = message;
+            
+            document.querySelector('.search-container').appendChild(success);
+            
+            setTimeout(() => success.remove(), 5000);
+        }
+
+        // Placeholder functions for buttons
+        function getDetailedReport() {
+            alert('📊 Detailed Report Feature\n\nThis would generate a comprehensive PDF report with:\n• Soil analysis\n• Weather patterns\n• Yield predictions\n• Optimal planting times\n• Historical data\n\nComing in full version!');
+        }
+
+        function saveLocation() {
+            if (currentMarker) {
+                const coords = currentMarker.getLatLng();
+                const saved = {
+                    lat: coords.lat,
+                    lng: coords.lng,
+                    timestamp: new Date().toISOString(),
+                    name: `Field ${Date.now()}`
+                };
+
+                // Save to localStorage
+                const savedLocations = JSON.parse(localStorage.getItem('haymax_locations') || '[]');
+                savedLocations.push(saved);
+                localStorage.setItem('haymax_locations', JSON.stringify(savedLocations));
+
+                alert(`💾 Location saved!\n\nCoordinates: ${coords.lat.toFixed(4)}, ${coords.lng.toFixed(4)}\n\nYou now have ${savedLocations.length} saved locations.`);
+            } else {
+                alert('Please click on a field location first!');
+            }
+        }
+
+        // Handle Enter key in address input
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+            
+            document.getElementById('addressInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchAddress();
+                }
+            });
+
+            console.log('🌾 HayMax Pro Simple Interface loaded!');
+        });
+
+        // Auto-detect location if browser supports it
+        function detectLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    
+                    map.setView([lat, lng], 14);
+                    getFieldInfo(lat, lng);
+                    
+                    document.getElementById('instructions').innerHTML = 
+                        '<strong>📍 Using your current location</strong><br>Click anywhere else to get field information';
+                }, function(error) {
+                    console.log('Geolocation not available');
+                });
+            }
+        }
+
+        // Add auto-location button to search container
+        setTimeout(() => {
+            if (navigator.geolocation) {
+                const autoBtn = document.createElement('button');
+                autoBtn.className = 'simple-button';
+                autoBtn.innerHTML = '📍 Use My Location';
+                autoBtn.onclick = detectLocation;
+                autoBtn.style.margin = '1rem 0';
+                document.querySelector('.search-container').appendChild(autoBtn);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

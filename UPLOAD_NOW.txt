@@ -1,0 +1,21 @@
+🚀 UPLOAD TO GRADINGPEN.COM NOW!
+
+FILE TO UPLOAD: gradingpen-LIVE.html
+TARGET: Replace index.html on gradingpen.com
+
+STEPS:
+1. Download: gradingpen-LIVE.html
+2. Login: Hostinger control panel
+3. Open: File Manager
+4. Go to: public_html/ folder
+5. Delete: old index.html
+6. Upload: gradingpen-LIVE.html  
+7. Rename: to index.html
+8. Done: Visit gradingpen.com
+
+RESULT:
+✅ Working email signup
+✅ Functional buttons
+✅ Lead generation ready
+
+UPLOAD NOW!

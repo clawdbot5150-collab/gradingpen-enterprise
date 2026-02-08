@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoSlicing - Professional Geospatial Intelligence Platform</title>
+    
+    <style>
+        :root {
+            --ocean-blue: #0A2463;
+            --cyan: #00B4D8;
+            --amber: #F77F00;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
+        }
+        
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98);
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--ocean-blue);
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        
+        .trial-btn {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan)) !important;
+            color: white !important;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+        
+        .trial-btn:hover {
+            background: linear-gradient(135deg, #1e3a8a, #0891b2) !important;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, #1e3a8a 50%, var(--cyan) 100%);
+            display: flex;
+            align-items: center;
+            color: white;
+            padding-top: 70px;
+        }
+        
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyan), var(--amber));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal.active {
+            display: flex !important;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            color: var(--gray-800);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--gray-600);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .nav-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <div class="logo-icon">🌍</div>
+                <span>GeoSlicing</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><button class="trial-btn" onclick="showSignup()">Start Free Trial</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <h1 class="hero-title">Transform Spatial Data Into Intelligence</h1>
+            <p class="hero-subtitle">
+                Professional geospatial analysis platform with interactive visualization, 
+                AI-powered insights, and real-time data processing.
+            </p>
+            <div>
+                <button class="btn btn-primary" onclick="showSignup()">🚀 Start Free Trial</button>
+                <a href="#features" class="btn btn-secondary">📋 View Features</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="hideSignup()">&times;</button>
+            <h2>🚀 Start Your Free Trial</h2>
+            <p>Get instant access to professional geospatial intelligence tools. No credit card required.</p>
+            
+            <form onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Company</label>
+                    <input type="text">
+                </div>
+                
+                <div class="form-group">
+                    <label>Primary Use Case *</label>
+                    <select required>
+                        <option value="">Select your use case</option>
+                        <option value="urban-planning">Urban Planning</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="emergency">Emergency Response</option>
+                        <option value="environmental">Environmental Analysis</option>
+                        <option value="logistics">Logistics & Transportation</option>
+                        <option value="energy">Energy & Infrastructure</option>
+                        <option value="research">Research & Academia</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn">Start Free Trial Now</button>
+                
+                <p style="font-size: 0.875rem; color: #666; text-align: center; margin-top: 1rem;">
+                    14-day free trial • No credit card required • Full access to all features
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        console.log('🚀 ULTRA SIMPLE VERSION LOADING...');
+        
+        function showSignup() {
+            console.log('🎯 showSignup() called!');
+            alert('BUTTON CLICK DETECTED!\n\nThis proves the button works!\n\nNow showing signup modal...');
+            
+            const modal = document.getElementById('signupModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('✅ Modal should be visible now');
+            } else {
+                console.error('❌ Modal not found');
+                alert('Modal not found - but button definitely works!');
+            }
+        }
+        
+        function hideSignup() {
+            console.log('❌ hideSignup() called!');
+            const modal = document.getElementById('signupModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        function submitForm(event) {
+            event.preventDefault();
+            console.log('📝 Form submitted!');
+            
+            alert('🎉 SUCCESS!\n\nAccount created successfully!\n\nWelcome to GeoSlicing!\n\nLogin at: app.geoslicing.com');
+            hideSignup();
+        }
+        
+        // Test buttons on page load
+        window.addEventListener('load', function() {
+            console.log('✅ Page loaded completely');
+            const buttons = document.querySelectorAll('.trial-btn, .btn-primary');
+            console.log('🔍 Found', buttons.length, 'buttons');
+            
+            // Test each button
+            buttons.forEach((btn, i) => {
+                console.log('Button', i+1, ':', btn.textContent.trim());
+            });
+            
+            setTimeout(() => {
+                console.log('🎉 Ready! Click any "Start Free Trial" button!');
+            }, 1000);
+        });
+        
+        console.log('🌍 GeoSlicing - ULTRA SIMPLE VERSION READY!');
+    </script>
+</body>
+</html>

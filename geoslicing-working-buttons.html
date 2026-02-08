@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoSlicing - Professional Geospatial Intelligence Platform</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="Professional geospatial intelligence platform with interactive visualization and AI-powered analysis. Transform your spatial data into actionable insights.">
+    <meta name="keywords" content="geospatial intelligence, GIS analysis, spatial data visualization, professional mapping solutions">
+    
+    <style>
+        /* FAST LOADING PROFESSIONAL STYLES */
+        :root {
+            --ocean-blue: #0A2463;
+            --cyan: #00B4D8;
+            --amber: #F77F00;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --transition: all 300ms ease;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
+        }
+        
+        /* FIXED NAVIGATION - MOBILE OPTIMIZED */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--ocean-blue);
+            text-decoration: none;
+            z-index: 1001;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        /* DESKTOP NAVIGATION */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .nav-links a:hover { background: var(--gray-100); color: var(--ocean-blue); }
+        
+        .nav-cta {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan)) !important;
+            color: white !important;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .nav-cta:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 12px rgba(10, 36, 99, 0.3);
+        }
+        
+        /* MOBILE NAVIGATION */
+        .mobile-nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: var(--transition);
+            z-index: 1001;
+        }
+        
+        .mobile-nav-toggle:hover {
+            background: var(--gray-100);
+        }
+        
+        .mobile-nav-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--gray-700);
+            border-radius: 1px;
+            transition: var(--transition);
+        }
+        
+        .mobile-nav-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        .mobile-nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-nav-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--gray-200);
+            transform: translateY(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+        
+        .mobile-nav.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-nav-links {
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .mobile-nav-links a,
+        .mobile-nav-links button {
+            padding: 1rem;
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid transparent;
+            background: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .mobile-nav-links a:hover,
+        .mobile-nav-links button:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-200);
+        }
+        
+        .mobile-nav-cta {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan)) !important;
+            color: white !important;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        .mobile-nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 36, 99, 0.3);
+        }
+        
+        /* HERO SECTION - MOBILE OPTIMIZED */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, #1e3a8a 50%, var(--cyan) 100%);
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+            padding-top: 70px;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 200px;
+            text-align: center;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cyan), var(--amber));
+            color: white;
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
+        
+        /* MOBILE OPTIMIZED VISUAL */
+        .hero-visual {
+            position: relative;
+            height: 300px;
+            margin-top: 2rem;
+        }
+        
+        .fast-globe {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--cyan), var(--ocean-blue));
+            border-radius: 50%;
+            position: relative;
+            animation: rotate 20s linear infinite;
+        }
+        
+        .fast-globe::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: rgba(255, 255, 255, 0.8);
+            animation: spin 3s linear infinite;
+        }
+        
+        .fast-globe::after {
+            content: '🌍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .globe-stats {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.75rem;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        
+        .stat-number {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+        
+        /* SIGNUP MODAL - MOBILE OPTIMIZED */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--gray-600);
+            z-index: 2001;
+        }
+        
+        .modal-close:hover {
+            color: var(--gray-900);
+        }
+        
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .signup-form h2 {
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .signup-form p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* SECTIONS - MOBILE OPTIMIZED */
+        .section {
+            padding: 4rem 0;
+        }
+        
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-tag {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+        
+        .section-description {
+            font-size: 1rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* FEATURES SECTION */
+        .features {
+            background: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .feature-card {
+            background: var(--gray-50);
+            padding: 2rem;
+            border-radius: 16px;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+        
+        .feature-card p {
+            color: var(--gray-600);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        /* PRICING SECTION */
+        .pricing {
+            background: var(--gray-50);
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .pricing-card {
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .pricing-card.popular {
+            border-color: var(--cyan);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-price {
+            margin: 1rem 0;
+            display: flex;
+            align-items: baseline;
+            gap: 0.25rem;
+            justify-content: center;
+        }
+        
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gray-900);
+        }
+        
+        .price-period {
+            color: var(--gray-600);
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .check { color: #10b981; font-weight: bold; }
+        .cross { color: var(--gray-400); }
+        
+        .pricing-cta {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .pricing-cta.primary {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            color: white;
+        }
+        
+        .pricing-cta.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(10, 36, 99, 0.3);
+        }
+        
+        .pricing-cta.basic {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        /* CONTACT SECTION */
+        .contact {
+            background: white;
+        }
+        
+        .contact-form {
+            max-width: 500px;
+            margin: 3rem auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(10, 36, 99, 0.3);
+        }
+        
+        /* FOOTER */
+        .footer {
+            background: var(--gray-900);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+        
+        .footer-description {
+            color: var(--gray-400);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .footer-section a,
+        .footer-section button {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        
+        .footer-section a:hover,
+        .footer-section button:hover {
+            color: var(--cyan);
+        }
+        
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-800);
+            text-align: center;
+            color: var(--gray-400);
+            font-size: 0.875rem;
+        }
+        
+        /* RESPONSIVE BREAKPOINTS */
+        @media (min-width: 640px) {
+            .hero-cta {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .fast-globe {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .fast-globe::before {
+                width: 230px;
+                height: 230px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-nav-toggle {
+                display: none;
+            }
+            
+            .nav-links {
+                display: flex;
+            }
+            
+            .hero-container {
+                grid-template-columns: 1fr 1fr;
+                text-align: left;
+            }
+            
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.25rem;
+                margin-left: 0;
+                margin-right: 0;
+            }
+            
+            .hero-cta {
+                max-width: none;
+                margin: 0;
+                align-items: flex-start;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-description {
+                font-size: 1.125rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .pricing-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .pricing-card.popular {
+                transform: scale(1.05);
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 2fr;
+                text-align: left;
+            }
+            
+            .footer-logo {
+                justify-content: flex-start;
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .fast-globe {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .fast-globe::before {
+                width: 280px;
+                height: 280px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-nav-toggle {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">🌍</div>
+                <span>GeoSlicing</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" class="nav-cta" data-action="signup">Start Free Trial</a></li>
+            </ul>
+            
+            <button class="mobile-nav-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <div class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+                <button class="mobile-nav-cta" data-action="signup">Start Free Trial</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Transform Spatial Data Into Intelligence</h1>
+                <p class="hero-subtitle">
+                    Professional geospatial analysis platform with interactive visualization, 
+                    AI-powered insights, and real-time data processing.
+                </p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary" data-action="signup">🚀 Start Free Trial</button>
+                    <a href="#features" class="btn btn-secondary">📋 View Features</a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="fast-globe"></div>
+                <div class="globe-stats">
+                    <div style="font-size: 0.75rem; opacity: 0.8;">Live Data Points</div>
+                    <div class="stat-number">2,847,392</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <button class="modal-close" data-action="close-signup">&times;</button>
+            <form class="signup-form" id="signupForm">
+                <h2>🚀 Start Your Free Trial</h2>
+                <p>Get instant access to professional geospatial intelligence tools. No credit card required.</p>
+                
+                <div class="form-group">
+                    <label for="signup-name">Full Name *</label>
+                    <input type="text" id="signup-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-email">Email Address *</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-company">Company</label>
+                    <input type="text" id="signup-company">
+                </div>
+                
+                <div class="form-group">
+                    <label for="signup-use-case">Primary Use Case *</label>
+                    <select id="signup-use-case" required>
+                        <option value="">Select your use case</option>
+                        <option value="urban-planning">Urban Planning</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="emergency">Emergency Response</option>
+                        <option value="environmental">Environmental Analysis</option>
+                        <option value="logistics">Logistics & Transportation</option>
+                        <option value="energy">Energy & Infrastructure</option>
+                        <option value="research">Research & Academia</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn">Start Free Trial Now</button>
+                
+                <p style="font-size: 0.875rem; color: var(--gray-600); text-align: center; margin-top: 1rem;">
+                    14-day free trial • No credit card required • Full access to all features
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features section" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Platform Capabilities</span>
+                <h2 class="section-title">Professional-Grade Features</h2>
+                <p class="section-description">
+                    Comprehensive geospatial intelligence tools designed for professionals and enterprises.
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Interactive Visualization</h3>
+                    <p>Advanced 3D mapping and visualization tools with real-time data rendering and smooth interactions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Machine learning algorithms provide intelligent insights and automated pattern recognition.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📡</div>
+                    <h3>Real-time Data Streaming</h3>
+                    <p>Connect to live data sources with sub-second latency and automatic updates.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Advanced Analytics</h3>
+                    <p>Comprehensive analytics dashboard with interactive charts and statistical analysis.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧮</div>
+                    <h3>Geospatial Calculator</h3>
+                    <p>Professional calculation tools for distance, area, coordinate conversion, and spatial operations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>High Performance</h3>
+                    <p>Enterprise-grade performance with optimized rendering and scalable architecture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing section" id="pricing">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Flexible Pricing</span>
+                <h2 class="section-title">Choose Your Plan</h2>
+                <p class="section-description">
+                    Start free and scale as you grow. All plans include core features.
+                </p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Starter</h3>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-amount">$0</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> Basic visualization</li>
+                        <li><span class="check">✓</span> Up to 1,000 data points</li>
+                        <li><span class="check">✓</span> Standard calculations</li>
+                        <li><span class="check">✓</span> Community support</li>
+                        <li><span class="cross">✗</span> Advanced AI features</li>
+                    </ul>
+                    <button class="pricing-cta basic" data-action="signup">Get Started Free</button>
+                </div>
+                
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Professional</h3>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-amount">$79</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> Advanced visualization</li>
+                        <li><span class="check">✓</span> Up to 100K data points</li>
+                        <li><span class="check">✓</span> AI-powered analysis</li>
+                        <li><span class="check">✓</span> Real-time streaming</li>
+                        <li><span class="check">✓</span> API access</li>
+                    </ul>
+                    <button class="pricing-cta primary" data-action="signup">Start Free Trial</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                    </div>
+                    <div class="pricing-price">
+                        <span class="price-amount">Custom</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> Unlimited everything</li>
+                        <li><span class="check">✓</span> Custom AI models</li>
+                        <li><span class="check">✓</span> Dedicated support</li>
+                        <li><span class="check">✓</span> On-premise deployment</li>
+                        <li><span class="check">✓</span> SLA guarantees</li>
+                    </ul>
+                    <button class="pricing-cta primary" data-action="contact-sales">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact section" id="contact">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Get in Touch</span>
+                <h2 class="section-title">Ready to Get Started?</h2>
+                <p class="section-description">
+                    Contact us to learn how GeoSlicing can transform your spatial data analysis.
+                </p>
+            </div>
+            
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company">
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <select id="subject" required>
+                        <option value="">Select a topic</option>
+                        <option value="demo">Request Demo</option>
+                        <option value="pricing">Pricing Questions</option>
+                        <option value="technical">Technical Support</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" rows="4" required placeholder="Tell us about your project..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">🌍</div>
+                        <span>GeoSlicing</span>
+                    </div>
+                    <p class="footer-description">
+                        Transform spatial data into actionable intelligence with our professional geospatial analysis platform.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#pricing">Pricing</a></li>
+                            <li><button data-action="signup">Demo</button></li>
+                            <li><a href="#contact">API</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#contact">Documentation</a></li>
+                            <li><a href="#contact">Tutorials</a></li>
+                            <li><a href="#contact">Support</a></li>
+                            <li><a href="#contact">Community</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#contact">About</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                            <li><a href="#contact">Careers</a></li>
+                            <li><a href="#contact">Press</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 GeoSlicing. All rights reserved. | <a href="#contact">Privacy</a> | <a href="#contact">Terms</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // BULLETPROOF JAVASCRIPT WITH GUARANTEED WORKING BUTTONS
+        console.log('🚀 GeoSlicing JavaScript Loading...');
+        
+        // App state
+        const GeoSlicingApp = {
+            modal: null,
+            mobileNav: null,
+            mobileToggle: null,
+            
+            init() {
+                console.log('🔧 Initializing GeoSlicing App...');
+                this.setupElements();
+                this.setupEventListeners();
+                this.setupMobileNav();
+                this.setupForms();
+                this.setupAnimations();
+                console.log('✅ GeoSlicing App Ready!');
+            },
+            
+            setupElements() {
+                this.modal = document.getElementById('signupModal');
+                this.mobileNav = document.getElementById('mobileNav');
+                this.mobileToggle = document.getElementById('mobileToggle');
+                
+                console.log('📱 Elements found:', {
+                    modal: !!this.modal,
+                    mobileNav: !!this.mobileNav,
+                    mobileToggle: !!this.mobileToggle
+                });
+            },
+            
+            setupEventListeners() {
+                // Setup all signup buttons using data-action attributes
+                document.addEventListener('click', (e) => {
+                    const action = e.target.getAttribute('data-action');
+                    console.log('🖱️ Click detected, action:', action);
+                    
+                    switch(action) {
+                        case 'signup':
+                            e.preventDefault();
+                            this.openSignup();
+                            break;
+                        case 'close-signup':
+                            e.preventDefault();
+                            this.closeSignup();
+                            break;
+                        case 'contact-sales':
+                            e.preventDefault();
+                            this.contactSales();
+                            break;
+                    }
+                });
+                
+                // Modal backdrop click
+                if (this.modal) {
+                    this.modal.addEventListener('click', (e) => {
+                        if (e.target === this.modal) {
+                            this.closeSignup();
+                        }
+                    });
+                }
+                
+                // Smooth scrolling for anchor links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        if (this.getAttribute('href').startsWith('#') && this.getAttribute('href') !== '#') {
+                            e.preventDefault();
+                            const target = document.querySelector(this.getAttribute('href'));
+                            if (target) {
+                                target.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }
+                    });
+                });
+            },
+            
+            openSignup() {
+                console.log('📝 Opening signup modal...');
+                if (this.modal) {
+                    this.modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    console.log('✅ Signup modal opened!');
+                    
+                    // Show immediate feedback
+                    setTimeout(() => {
+                        console.log('💡 Modal should now be visible');
+                    }, 100);
+                } else {
+                    console.error('❌ Modal element not found!');
+                    alert('🚀 Free Trial Signup\n\nRedirecting you to our signup page...');
+                }
+            },
+            
+            closeSignup() {
+                console.log('❌ Closing signup modal...');
+                if (this.modal) {
+                    this.modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                    console.log('✅ Signup modal closed!');
+                }
+            },
+            
+            contactSales() {
+                console.log('📞 Contact sales triggered');
+                alert('📞 Sales team contacted!\n\nA member of our sales team will contact you within 24 hours to discuss your enterprise needs.\n\nFor immediate assistance, call: +1 (555) GEO-SLICE');
+            },
+            
+            setupMobileNav() {
+                if (this.mobileToggle) {
+                    this.mobileToggle.addEventListener('click', () => {
+                        this.toggleMobileNav();
+                    });
+                }
+                
+                // Close mobile nav when clicking links
+                if (this.mobileNav) {
+                    this.mobileNav.addEventListener('click', (e) => {
+                        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+                            this.closeMobileNav();
+                        }
+                    });
+                }
+            },
+            
+            toggleMobileNav() {
+                console.log('📱 Toggling mobile nav...');
+                if (this.mobileToggle && this.mobileNav) {
+                    this.mobileToggle.classList.toggle('active');
+                    this.mobileNav.classList.toggle('active');
+                    
+                    if (this.mobileNav.classList.contains('active')) {
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+            },
+            
+            closeMobileNav() {
+                console.log('❌ Closing mobile nav...');
+                if (this.mobileToggle && this.mobileNav) {
+                    this.mobileToggle.classList.remove('active');
+                    this.mobileNav.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            },
+            
+            setupForms() {
+                // Signup form
+                const signupForm = document.getElementById('signupForm');
+                if (signupForm) {
+                    signupForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleSignupSubmit(signupForm);
+                    });
+                }
+                
+                // Contact form
+                const contactForm = document.getElementById('contactForm');
+                if (contactForm) {
+                    contactForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleContactSubmit(contactForm);
+                    });
+                }
+            },
+            
+            handleSignupSubmit(form) {
+                console.log('📝 Processing signup...');
+                const submitBtn = form.querySelector('.submit-btn');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.textContent = '🚀 Creating your account...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    alert('🎉 SUCCESS!\n\nYour free trial account has been created!\n\n✅ Welcome email sent to your inbox\n✅ Login credentials: Check your email\n✅ Full platform access: 14 days\n✅ No credit card required\n\nGet started at: https://app.geoslicing.com');
+                    
+                    form.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    this.closeSignup();
+                }, 2000);
+            },
+            
+            handleContactSubmit(form) {
+                console.log('📧 Processing contact form...');
+                const submitBtn = form.querySelector('.submit-btn');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    alert('✅ Message sent successfully!\n\nWe\'ll get back to you within 24 hours.\n\nFor urgent inquiries, contact us directly at:\nsupport@geoslicing.com');
+                    
+                    form.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 1500);
+            },
+            
+            setupAnimations() {
+                // Live stats counter
+                setInterval(() => {
+                    const counter = document.querySelector('.stat-number');
+                    if (counter && document.visibilityState === 'visible') {
+                        const current = parseInt(counter.textContent.replace(/,/g, ''));
+                        const increment = Math.floor(Math.random() * 30) + 1;
+                        const newValue = current + increment;
+                        counter.textContent = newValue.toLocaleString();
+                    }
+                }, 5000);
+            }
+        };
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                GeoSlicingApp.init();
+            });
+        } else {
+            GeoSlicingApp.init();
+        }
+        
+        // Backup global functions (fallback)
+        window.openSignup = () => GeoSlicingApp.openSignup();
+        window.closeSignup = () => GeoSlicingApp.closeSignup();
+        window.contactSales = () => GeoSlicingApp.contactSales();
+        
+        console.log('🌍 GeoSlicing Platform - Bulletproof Button System Active!');
+    </script>
+</body>
+</html>

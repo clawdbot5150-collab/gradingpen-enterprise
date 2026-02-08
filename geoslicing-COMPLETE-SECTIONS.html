@@ -1,0 +1,738 @@
+<!-- CONTINUING FROM THE FEATURES SECTION - ADDING ALL REMAINING SECTIONS -->
+
+    <!-- Solutions Section -->
+    <section class="solutions section-padding" id="solutions">
+        <div class="container">
+            <div class="text-center">
+                <div class="features-badge">🏢 Industry Solutions</div>
+                <h2 class="features-title">Tailored for Every Industry</h2>
+                <p class="features-subtitle">
+                    Specialized geospatial solutions for diverse sectors. 
+                    From smart cities to precision agriculture, we power spatial intelligence across industries.
+                </p>
+            </div>
+            
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <div class="solution-icon">🏙️</div>
+                        <h3 class="solution-title">Smart Cities</h3>
+                    </div>
+                    <p class="solution-description">
+                        Urban planning, traffic optimization, infrastructure monitoring, 
+                        and citizen services with real-time spatial analytics.
+                    </p>
+                    <div class="solution-features">
+                        <span class="solution-feature">Traffic Flow Analysis</span>
+                        <span class="solution-feature">Infrastructure Monitoring</span>
+                        <span class="solution-feature">Emergency Response</span>
+                    </div>
+                    <button class="solution-cta" onclick="learnMore('smart-cities')">Learn More</button>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <div class="solution-icon">🌾</div>
+                        <h3 class="solution-title">Precision Agriculture</h3>
+                    </div>
+                    <p class="solution-description">
+                        Optimize crop yields, monitor field conditions, and maximize 
+                        efficiency with satellite imagery and IoT sensor integration.
+                    </p>
+                    <div class="solution-features">
+                        <span class="solution-feature">Crop Health Monitoring</span>
+                        <span class="solution-feature">Yield Optimization</span>
+                        <span class="solution-feature">Weather Integration</span>
+                    </div>
+                    <button class="solution-cta" onclick="learnMore('agriculture')">Learn More</button>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <div class="solution-icon">⚡</div>
+                        <h3 class="solution-title">Energy & Utilities</h3>
+                    </div>
+                    <p class="solution-description">
+                        Asset management, grid optimization, renewable energy planning, 
+                        and environmental impact assessment for utility companies.
+                    </p>
+                    <div class="solution-features">
+                        <span class="solution-feature">Grid Management</span>
+                        <span class="solution-feature">Asset Tracking</span>
+                        <span class="solution-feature">Environmental Monitoring</span>
+                    </div>
+                    <button class="solution-cta" onclick="learnMore('energy')">Learn More</button>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <div class="solution-icon">🚛</div>
+                        <h3 class="solution-title">Supply Chain & Logistics</h3>
+                    </div>
+                    <p class="solution-description">
+                        Route optimization, fleet tracking, warehouse management, 
+                        and supply chain visibility with advanced geospatial analytics.
+                    </p>
+                    <div class="solution-features">
+                        <span class="solution-feature">Route Optimization</span>
+                        <span class="solution-feature">Fleet Management</span>
+                        <span class="solution-feature">Real-time Tracking</span>
+                    </div>
+                    <button class="solution-cta" onclick="learnMore('logistics')">Learn More</button>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <div class="solution-icon">🏥</div>
+                        <h3 class="solution-title">Healthcare & Emergency</h3>
+                    </div>
+                    <p class="solution-description">
+                        Disease tracking, emergency response coordination, hospital 
+                        catchment analysis, and public health spatial intelligence.
+                    </p>
+                    <div class="solution-features">
+                        <span class="solution-feature">Emergency Response</span>
+                        <span class="solution-feature">Disease Tracking</span>
+                        <span class="solution-feature">Resource Planning</span>
+                    </div>
+                    <button class="solution-cta" onclick="learnMore('healthcare')">Learn More</button>
+                </div>
+                
+                <div class="solution-card">
+                    <div class="solution-header">
+                        <div class="solution-icon">🏦</div>
+                        <h3 class="solution-title">Financial Services</h3>
+                    </div>
+                    <p class="solution-description">
+                        Risk assessment, location intelligence, market analysis, 
+                        and fraud detection with geospatial data insights.
+                    </p>
+                    <div class="solution-features">
+                        <span class="solution-feature">Risk Assessment</span>
+                        <span class="solution-feature">Market Analysis</span>
+                        <span class="solution-feature">Fraud Detection</span>
+                    </div>
+                    <button class="solution-cta" onclick="learnMore('financial')">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Visualization Dashboard (Unique Element #3) -->
+    <section class="data-dashboard section-padding" id="dashboard">
+        <div class="container">
+            <div class="text-center">
+                <div class="features-badge">📊 Live Demo</div>
+                <h2 class="features-title">Real-Time Analytics Dashboard</h2>
+                <p class="features-subtitle">
+                    Experience our data visualization capabilities with live charts, 
+                    heatmaps, and spatial analytics powered by real-world datasets.
+                </p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h3>Global Temperature Trends</h3>
+                        <div class="dashboard-controls">
+                            <button class="control-btn active" onclick="switchTimeframe('24h')">24H</button>
+                            <button class="control-btn" onclick="switchTimeframe('7d')">7D</button>
+                            <button class="control-btn" onclick="switchTimeframe('30d')">30D</button>
+                        </div>
+                    </div>
+                    <canvas id="temperatureChart" width="400" height="200"></canvas>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h3>Spatial Data Distribution</h3>
+                        <div class="live-indicator">
+                            <span class="pulse"></span>
+                            <span>Live</span>
+                        </div>
+                    </div>
+                    <div id="heatmapContainer" class="heatmap-container"></div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h3>Processing Metrics</h3>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-value" id="throughput">847</div>
+                            <div class="metric-label">Records/sec</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="accuracy">99.7%</div>
+                            <div class="metric-label">Accuracy</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="latency">12ms</div>
+                            <div class="metric-label">Latency</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value" id="uptime">99.99%</div>
+                            <div class="metric-label">Uptime</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h3>Regional Activity</h3>
+                    </div>
+                    <canvas id="regionalChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Query Interface (Unique Element #4) -->
+    <section class="ai-interface section-padding" id="ai-query">
+        <div class="container">
+            <div class="text-center">
+                <div class="features-badge">🤖 AI-Powered</div>
+                <h2 class="features-title">Natural Language Geospatial Queries</h2>
+                <p class="features-subtitle">
+                    Ask complex geospatial questions in plain English. 
+                    Our AI understands context, processes multiple data sources, and delivers actionable insights.
+                </p>
+            </div>
+            
+            <div class="ai-demo">
+                <div class="ai-chat">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>Hello! I'm your AI geospatial assistant. Try asking me something like:</p>
+                                <div class="suggestion-chips">
+                                    <button class="suggestion-chip" onclick="askAI('Show me population density in urban areas')">
+                                        Show me population density in urban areas
+                                    </button>
+                                    <button class="suggestion-chip" onclick="askAI('What are the climate trends in coastal regions?')">
+                                        What are the climate trends in coastal regions?
+                                    </button>
+                                    <button class="suggestion-chip" onclick="askAI('Find optimal locations for wind farms')">
+                                        Find optimal locations for wind farms
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input">
+                        <input type="text" id="aiQueryInput" placeholder="Ask me anything about geospatial data..." 
+                               onkeypress="if(event.key==='Enter') sendAIQuery()">
+                        <button onclick="sendAIQuery()" class="send-btn">
+                            <span>🚀</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-results">
+                    <div class="results-header">
+                        <h3>Analysis Results</h3>
+                        <div class="processing-indicator" id="processingIndicator">
+                            <span class="spinner"></span>
+                            <span>Processing...</span>
+                        </div>
+                    </div>
+                    <div class="results-content" id="aiResults">
+                        <div class="placeholder-result">
+                            <div class="placeholder-icon">📊</div>
+                            <p>AI analysis results will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Geospatial Calculator (Unique Element #5) -->
+    <section class="calculator section-padding" id="calculator">
+        <div class="container">
+            <div class="text-center">
+                <div class="features-badge">🧮 Professional Tools</div>
+                <h2 class="features-title">Geospatial Calculator Suite</h2>
+                <p class="features-subtitle">
+                    Professional-grade spatial calculations for distance, area, coordinates, 
+                    and advanced geometric operations with precision accuracy.
+                </p>
+            </div>
+            
+            <div class="calculator-tabs">
+                <button class="calc-tab active" onclick="switchCalc('distance')">Distance Calculator</button>
+                <button class="calc-tab" onclick="switchCalc('area')">Area Calculator</button>
+                <button class="calc-tab" onclick="switchCalc('coordinates')">Coordinate Converter</button>
+                <button class="calc-tab" onclick="switchCalc('buffer')">Buffer Analysis</button>
+            </div>
+            
+            <div class="calculator-content">
+                <!-- Distance Calculator -->
+                <div class="calc-panel active" id="distance-calc">
+                    <div class="calc-grid">
+                        <div class="calc-inputs">
+                            <h3>Calculate Distance Between Two Points</h3>
+                            
+                            <div class="input-group">
+                                <label>Point A</label>
+                                <div class="coord-inputs">
+                                    <input type="number" id="lat1" placeholder="Latitude" value="40.7589">
+                                    <input type="number" id="lon1" placeholder="Longitude" value="-73.9851">
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label>Point B</label>
+                                <div class="coord-inputs">
+                                    <input type="number" id="lat2" placeholder="Latitude" value="34.0522">
+                                    <input type="number" id="lon2" placeholder="Longitude" value="-118.2437">
+                                </div>
+                            </div>
+                            
+                            <button class="calc-btn" onclick="calculateDistance()">Calculate Distance</button>
+                            
+                            <div class="calc-results" id="distanceResults">
+                                <div class="result-item">
+                                    <span class="result-label">Great Circle Distance:</span>
+                                    <span class="result-value" id="greatCircleDistance">-</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Bearing:</span>
+                                    <span class="result-value" id="bearing">-</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Time (60 mph):</span>
+                                    <span class="result-value" id="travelTime">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calc-visual">
+                            <div id="distanceMap" class="calculator-map"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Area Calculator -->
+                <div class="calc-panel" id="area-calc">
+                    <div class="calc-grid">
+                        <div class="calc-inputs">
+                            <h3>Calculate Polygon Area</h3>
+                            
+                            <div class="input-group">
+                                <label>Polygon Coordinates (Lat, Lon pairs)</label>
+                                <textarea id="polygonCoords" placeholder="40.7589,-73.9851&#10;40.7614,-73.9776&#10;40.7505,-73.9751&#10;40.7480,-73.9826" rows="8"></textarea>
+                            </div>
+                            
+                            <button class="calc-btn" onclick="calculateArea()">Calculate Area</button>
+                            
+                            <div class="calc-results" id="areaResults">
+                                <div class="result-item">
+                                    <span class="result-label">Area (sq km):</span>
+                                    <span class="result-value" id="areaKm">-</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Area (sq miles):</span>
+                                    <span class="result-value" id="areaMiles">-</span>
+                                </div>
+                                <div class="result-item">
+                                    <span class="result-label">Perimeter (km):</span>
+                                    <span class="result-value" id="perimeter">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calc-visual">
+                            <div id="areaMap" class="calculator-map"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- More calculator panels... -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing section-padding" id="pricing">
+        <div class="container">
+            <div class="text-center">
+                <div class="features-badge">💰 Transparent Pricing</div>
+                <h2 class="features-title">Choose Your Plan</h2>
+                <p class="features-subtitle">
+                    Flexible pricing for teams of all sizes. Start free, 
+                    scale as you grow, enterprise solutions available.
+                </p>
+            </div>
+            
+            <div class="pricing-toggle">
+                <span class="pricing-label">Monthly</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pricingToggle" onchange="togglePricing()">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="pricing-label">Annual <span class="savings">Save 20%</span></span>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="plan-name">Starter</h3>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="price" id="starterPrice">0</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="plan-description">Perfect for individuals and small projects</p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Up to 1,000 API calls/month</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Basic 2D mapping</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Community support</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Standard geocoding</span>
+                        </div>
+                    </div>
+                    
+                    <button class="plan-cta" onclick="selectPlan('starter')">Start Free</button>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3 class="plan-name">Professional</h3>
+                        <div class="plan-price">
+                            <span class="currency">$</span>
+                            <span class="price" id="proPrice">99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p class="plan-description">Ideal for growing businesses and teams</p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Up to 100,000 API calls/month</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>3D visualization & globe</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>AI-powered analysis</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Real-time data streaming</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Priority support</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Custom integrations</span>
+                        </div>
+                    </div>
+                    
+                    <button class="plan-cta" onclick="selectPlan('professional')">Start Trial</button>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="plan-name">Enterprise</h3>
+                        <div class="plan-price">
+                            <span class="price">Custom</span>
+                        </div>
+                        <p class="plan-description">For large organizations with specific needs</p>
+                    </div>
+                    
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Unlimited API calls</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>On-premise deployment</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Dedicated infrastructure</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Custom AI models</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>24/7 dedicated support</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>SLA guarantees</span>
+                        </div>
+                    </div>
+                    
+                    <button class="plan-cta" onclick="selectPlan('enterprise')">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about section-padding" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <div class="features-badge">🚀 Our Mission</div>
+                    <h2 class="features-title">Democratizing Geospatial Intelligence</h2>
+                    <p class="about-text">
+                        We believe that advanced geospatial intelligence should be accessible to everyone. 
+                        Our platform combines cutting-edge AI, real-time data processing, and intuitive 
+                        visualization to make complex spatial analysis simple and powerful.
+                    </p>
+                    
+                    <div class="stats-row">
+                        <div class="stat">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Enterprise Clients</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">50M+</div>
+                            <div class="stat-label">Data Points Processed</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">99.9%</div>
+                            <div class="stat-label">Uptime SLA</div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-cta">
+                        <a href="#contact" class="btn-primary">Join Our Mission</a>
+                        <a href="#resources" class="btn-secondary">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="about-visual">
+                    <div class="tech-stack">
+                        <h3>Built on Modern Technology</h3>
+                        <div class="tech-grid">
+                            <div class="tech-item">
+                                <div class="tech-icon">🔬</div>
+                                <span>Machine Learning</span>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon">🌐</div>
+                                <span>WebGL Rendering</span>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon">⚡</div>
+                                <span>Real-time Processing</span>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon">☁️</div>
+                                <span>Cloud Infrastructure</span>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon">📊</div>
+                                <span>Big Data Analytics</span>
+                            </div>
+                            <div class="tech-item">
+                                <div class="tech-icon">🛡️</div>
+                                <span>Enterprise Security</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact section-padding" id="contact">
+        <div class="container">
+            <div class="text-center">
+                <div class="features-badge">📞 Get In Touch</div>
+                <h2 class="features-title">Ready to Transform Your Spatial Data?</h2>
+                <p class="features-subtitle">
+                    Start your geospatial intelligence journey today. Our team is here 
+                    to help you unlock the power of spatial data for your organization.
+                </p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Get Started Today</h3>
+                    <p>Choose the best way to connect with our team:</p>
+                    
+                    <div class="contact-options">
+                        <div class="contact-option">
+                            <div class="contact-icon">📞</div>
+                            <div>
+                                <h4>Sales & Demo</h4>
+                                <p>+1 (555) 123-4567</p>
+                                <a href="tel:+15551234567" class="contact-link">Call Now</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-option">
+                            <div class="contact-icon">💬</div>
+                            <div>
+                                <h4>Technical Support</h4>
+                                <p>support@geoslicing.com</p>
+                                <a href="mailto:support@geoslicing.com" class="contact-link">Email Support</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-option">
+                            <div class="contact-icon">🚀</div>
+                            <div>
+                                <h4>Live Demo</h4>
+                                <p>See the platform in action</p>
+                                <button class="contact-link" onclick="bookDemo()">Book Demo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactForm" onsubmit="submitContact(event)">
+                        <h3>Send us a message</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name*</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name*</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address*</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interest">Area of Interest</label>
+                            <select id="interest" name="interest">
+                                <option value="">Select an option</option>
+                                <option value="smart-cities">Smart Cities</option>
+                                <option value="agriculture">Precision Agriculture</option>
+                                <option value="energy">Energy & Utilities</option>
+                                <option value="logistics">Supply Chain & Logistics</option>
+                                <option value="healthcare">Healthcare & Emergency</option>
+                                <option value="financial">Financial Services</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message*</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Tell us about your geospatial needs..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="form-submit" id="submitBtn">
+                            <span id="submitText">Send Message</span>
+                            <span id="submitSpinner" class="hidden">Sending...</span>
+                        </button>
+                        
+                        <div class="form-result" id="formResult"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#home" class="footer-logo">
+                        <svg width="120" height="48" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 60 20 C 45 20, 35 30, 35 45 C 35 60, 60 90, 60 90 C 60 90, 85 60, 85 45 C 85 30, 75 20, 60 20 Z" fill="#7C3AED"/>
+                            <circle cx="60" cy="45" r="18" fill="#A78BFA"/>
+                            <circle cx="60" cy="45" r="12" fill="#C4B5FD"/>
+                            <circle cx="60" cy="45" r="6" fill="#EDE9FE"/>
+                            <line x1="35" y1="35" x2="85" y2="35" stroke="white" stroke-width="1.5"/>
+                            <line x1="35" y1="45" x2="85" y2="45" stroke="white" stroke-width="1.5"/>
+                            <line x1="35" y1="55" x2="85" y2="55" stroke="white" stroke-width="1.5"/>
+                            <text x="105" y="55" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#7C3AED">Geo</text>
+                            <text x="105" y="85" font-family="Arial, sans-serif" font-size="34" font-weight="300" fill="#A78BFA">Slicing</text>
+                        </svg>
+                    </a>
+                    <p class="footer-description">
+                        Transform spatial data into intelligence with our world-class 
+                        geospatial platform. Trusted by Fortune 500 companies worldwide.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#solutions">Solutions</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#api-docs">API Documentation</a></li>
+                        <li><a href="#status">System Status</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#news">News</a></li>
+                        <li><a href="#partners">Partners</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#cookies">Cookie Policy</a></li>
+                        <li><a href="#security">Security</a></li>
+                        <li><a href="#compliance">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 GeoSlicing Inc. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="LinkedIn">💼</a>
+                    <a href="#" aria-label="GitHub">🔧</a>
+                    <a href="#" aria-label="YouTube">📺</a>
+                </div>
+            </div>
+        </div>
+    </footer>

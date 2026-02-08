@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoSlicing - World-Class Geospatial Intelligence Platform</title>
+    
+    <!-- Enhanced SEO & EEAT Optimization -->
+    <meta name="description" content="Transform spatial data into actionable intelligence with our professional-grade 3D visualization, AI-powered analysis, and real-time geospatial platform. Trusted by Fortune 500 companies.">
+    <meta name="keywords" content="geospatial intelligence, 3D mapping, GIS analysis, spatial data visualization, AI geospatial, professional mapping solutions, real-time geographic data, geospatial AI, spatial analytics">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="GeoSlicing">
+    <meta name="publisher" content="GeoSlicing Inc">
+    <meta name="copyright" content="© 2026 GeoSlicing Inc. All rights reserved.">
+    
+    <!-- Open Graph Enhanced -->
+    <meta property="og:title" content="GeoSlicing - World-Class Geospatial Intelligence Platform">
+    <meta property="og:description" content="Professional 3D geospatial analysis with AI-powered insights, real-time data streaming, and interactive visualization">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://geoslicing.com">
+    <meta property="og:image" content="https://geoslicing.com/assets/og-geoslicing-platform.jpg">
+    <meta property="og:site_name" content="GeoSlicing">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GeoSlicing - World-Class Geospatial Intelligence">
+    <meta name="twitter:description" content="Transform spatial data into intelligence with 3D visualization and AI analysis">
+    <meta name="twitter:image" content="https://geoslicing.com/assets/twitter-geoslicing.jpg">
+    <meta name="twitter:site" content="@geoslicing">
+    
+    <!-- Enhanced Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "GeoSlicing",
+      "description": "Professional geospatial intelligence platform with 3D visualization and AI-powered analysis",
+      "url": "https://geoslicing.com",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Free trial available"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "GeoSlicing Inc",
+        "url": "https://geoslicing.com"
+      },
+      "featureList": [
+        "3D Geospatial Visualization",
+        "AI-Powered Analysis", 
+        "Real-time Data Streaming",
+        "Interactive Maps",
+        "Spatial Analytics"
+      ]
+    }
+    </script>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.mapbox.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Professional Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Modern Professional Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
+    
+    <!-- Enhanced Mapbox -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    
+    <!-- Animate.css for Enhanced Animations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        /* === WORLD-CLASS DESIGN SYSTEM === */
+        :root {
+            /* PRIMARY BRAND COLORS - Professional Ocean Theme */
+            --ocean-blue: #0A2463;
+            --ocean-blue-light: #1e3a8a;
+            --ocean-blue-dark: #051529;
+            --ocean-blue-50: rgba(10, 36, 99, 0.05);
+            --ocean-blue-100: rgba(10, 36, 99, 0.1);
+            --ocean-blue-900: rgba(10, 36, 99, 0.9);
+            
+            /* VIBRANT CYAN ACCENTS */
+            --cyan: #00B4D8;
+            --cyan-light: #0ea5e9;
+            --cyan-dark: #0891b2;
+            --cyan-50: rgba(0, 180, 216, 0.05);
+            --cyan-100: rgba(0, 180, 216, 0.1);
+            --cyan-900: rgba(0, 180, 216, 0.9);
+            
+            /* ELECTRIC AMBER HIGHLIGHTS */
+            --amber: #F77F00;
+            --amber-light: #fb923c;
+            --amber-dark: #c2410c;
+            --amber-50: rgba(247, 127, 0, 0.05);
+            --amber-100: rgba(247, 127, 0, 0.1);
+            --amber-900: rgba(247, 127, 0, 0.9);
+            
+            /* PROFESSIONAL GRADIENT SYSTEM */
+            --gradient-primary: linear-gradient(135deg, var(--ocean-blue), var(--cyan));
+            --gradient-accent: linear-gradient(135deg, var(--cyan), var(--amber));
+            --gradient-hero: linear-gradient(135deg, #0A2463 0%, #0B2D5A 25%, #00B4D8 75%, #0EA5E9 100%);
+            --gradient-data: linear-gradient(90deg, var(--cyan-100), var(--ocean-blue-100));
+            --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            
+            /* EXTENDED PROFESSIONAL GRAYSCALE */
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --gray-950: #020617;
+            
+            /* SEMANTIC COLORS */
+            --success: #10b981;
+            --success-light: #34d399;
+            --warning: #f59e0b;
+            --warning-light: #fbbf24;
+            --error: #ef4444;
+            --error-light: #f87171;
+            --info: var(--cyan);
+            
+            /* PROFESSIONAL TYPOGRAPHY SCALE */
+            --font-heading: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Monaco', 'Cascadia Code', monospace;
+            
+            /* PRECISE TYPOGRAPHY SCALE (8px grid) */
+            --text-xs: 0.75rem;     /* 12px */
+            --text-sm: 0.875rem;    /* 14px */
+            --text-base: 1rem;      /* 16px */
+            --text-lg: 1.125rem;    /* 18px */
+            --text-xl: 1.25rem;     /* 20px */
+            --text-2xl: 1.5rem;     /* 24px */
+            --text-3xl: 1.875rem;   /* 30px */
+            --text-4xl: 2.25rem;    /* 36px */
+            --text-5xl: 3rem;       /* 48px */
+            --text-6xl: 3.75rem;    /* 60px */
+            --text-7xl: 4.5rem;     /* 72px */
+            --text-8xl: 6rem;       /* 96px */
+            --text-9xl: 8rem;       /* 128px */
+            
+            /* PROFESSIONAL SPACING SYSTEM (8px grid) */
+            --space-px: 1px;
+            --space-0: 0;
+            --space-1: 0.5rem;      /* 8px */
+            --space-2: 1rem;        /* 16px */
+            --space-3: 1.5rem;      /* 24px */
+            --space-4: 2rem;        /* 32px */
+            --space-5: 2.5rem;      /* 40px */
+            --space-6: 3rem;        /* 48px */
+            --space-8: 4rem;        /* 64px */
+            --space-10: 5rem;       /* 80px */
+            --space-12: 6rem;       /* 96px */
+            --space-16: 8rem;       /* 128px */
+            --space-20: 10rem;      /* 160px */
+            --space-24: 12rem;      /* 192px */
+            
+            /* MODERN BORDER RADIUS SYSTEM */
+            --radius-none: 0px;
+            --radius-sm: 0.375rem;  /* 6px */
+            --radius-base: 0.5rem;  /* 8px */
+            --radius-md: 0.75rem;   /* 12px */
+            --radius-lg: 1rem;      /* 16px */
+            --radius-xl: 1.5rem;    /* 24px */
+            --radius-2xl: 2rem;     /* 32px */
+            --radius-full: 9999px;
+            
+            /* PROFESSIONAL SHADOWS SYSTEM */
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-base: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.15), 0 12px 20px rgba(0, 0, 0, 0.08);
+            --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-glass: 0 8px 32px rgba(10, 36, 99, 0.1);
+            
+            /* SMOOTH PROFESSIONAL TRANSITIONS */
+            --transition-fast: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            
+            /* GLASS MORPHISM EFFECTS */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --glass-backdrop: backdrop-filter: blur(20px) saturate(180%);
+            
+            /* Z-INDEX SYSTEM */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+            --z-toast: 1080;
+        }
+        
+        /* === MODERN CSS RESET === */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            line-height: 1.5;
+            -webkit-text-size-adjust: 100%;
+            tab-size: 4;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--white);
+            font-size: var(--text-base);
+            font-weight: 400;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* === PROFESSIONAL NAVIGATION === */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition-base);
+            height: 80px;
+        }
+        
+        .nav.scrolled {
+            background: rgba(248, 250, 252, 0.98);
+            border-bottom: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+        
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--ocean-blue);
+            text-decoration: none;
+            transition: var(--transition-base);
+            font-family: var(--font-heading);
+        }
+        
+        .nav-logo:hover {
+            transform: scale(1.02);
+        }
+        
+        .nav-logo svg {
+            height: 44px;
+            width: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--space-8);
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: var(--text-sm);
+            letter-spacing: -0.01em;
+            transition: var(--transition-base);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            position: relative;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--ocean-blue);
+            transform: translateY(-1px);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+            transform: translateX(-50%);
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 80%;
+        }
+        
+        .nav-cta {
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: var(--text-sm);
+            cursor: pointer;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-base);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .nav-cta:active {
+            transform: translateY(0);
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: var(--space-2);
+        }
+        
+        .mobile-nav-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--gray-700);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+        }
+        
+        .mobile-nav-menu {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-lg);
+            padding: var(--space-6);
+            transform: translateY(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+        
+        .mobile-nav-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* === HERO SECTION === */
+        .hero {
+            min-height: 100vh;
+            background: var(--gradient-hero);
+            position: relative;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(247, 127, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 180, 216, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(10, 36, 99, 0.05) 0%, transparent 50%);
+        }
+        
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-12);
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-content {
+            animation: fadeInUp 800ms ease-out;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background: var(--glass-bg);
+            border: var(--glass-border);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            margin-bottom: var(--space-6);
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero-title {
+            font-size: var(--text-6xl);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: var(--space-6);
+            font-family: var(--font-heading);
+            background: linear-gradient(135deg, var(--white), var(--cyan-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: var(--text-xl);
+            line-height: 1.6;
+            margin-bottom: var(--space-8);
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: var(--white);
+            color: var(--ocean-blue);
+            border: none;
+            padding: var(--space-4) var(--space-8);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-lg);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--white);
+            border: var(--glass-border);
+            padding: var(--space-4) var(--space-8);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: var(--text-base);
+            cursor: pointer;
+            transition: var(--transition-base);
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* 3D Globe Visualization */
+        .hero-visual {
+            height: 600px;
+            position: relative;
+            border-radius: var(--radius-2xl);
+            background: var(--glass-bg);
+            border: var(--glass-border);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-glass);
+            overflow: hidden;
+        }
+        
+        #globeContainer {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .globe-overlay {
+            position: absolute;
+            top: var(--space-6);
+            left: var(--space-6);
+            right: var(--space-6);
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .globe-stats {
+            background: var(--glass-bg);
+            border: var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            backdrop-filter: blur(10px);
+        }
+        
+        .globe-stat {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-2);
+            font-size: var(--text-sm);
+            color: var(--white);
+        }
+        
+        .globe-stat:last-child {
+            margin-bottom: 0;
+        }
+        
+        .globe-stat-number {
+            font-weight: 700;
+            color: var(--amber);
+        }
+        
+        /* === FEATURES SECTION === */
+        .features {
+            padding: var(--space-24) 0;
+            background: var(--gray-50);
+        }
+        
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+        
+        .features-header {
+            text-align: center;
+            margin-bottom: var(--space-16);
+        }
+        
+        .features-badge {
+            display: inline-block;
+            background: var(--cyan-100);
+            color: var(--cyan-dark);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            margin-bottom: var(--space-4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .features-title {
+            font-size: var(--text-5xl);
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--gray-900);
+            margin-bottom: var(--space-6);
+            font-family: var(--font-heading);
+        }
+        
+        .features-subtitle {
+            font-size: var(--text-xl);
+            color: var(--gray-600);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: var(--space-8);
+            margin-top: var(--space-12);
+        }
+        
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-base);
+            transition: var(--transition-base);
+            border: 1px solid var(--gray-200);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition-base);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-base);
+        }
+        
+        .feature-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-3);
+            font-family: var(--font-heading);
+        }
+        
+        .feature-description {
+            color: var(--gray-600);
+            line-height: 1.7;
+            margin-bottom: var(--space-4);
+        }
+        
+        .feature-link {
+            color: var(--ocean-blue);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            transition: var(--transition-base);
+        }
+        
+        .feature-link:hover {
+            gap: var(--space-2);
+        }
+        
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: var(--space-8);
+            }
+            
+            .hero-title {
+                font-size: var(--text-5xl);
+            }
+            
+            .hero-visual {
+                height: 400px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-nav-toggle {
+                display: flex;
+            }
+            
+            .hero-title {
+                font-size: var(--text-4xl);
+            }
+            
+            .hero-subtitle {
+                font-size: var(--text-lg);
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .features-title {
+                font-size: var(--text-4xl);
+            }
+            
+            .nav-logo svg {
+                height: 36px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 var(--space-4);
+            }
+            
+            .hero-container {
+                padding: 0 var(--space-4);
+            }
+            
+            .hero-title {
+                font-size: var(--text-3xl);
+            }
+            
+            .features-container {
+                padding: 0 var(--space-4);
+            }
+            
+            .nav-logo svg {
+                height: 32px;
+            }
+        }
+        
+        /* === ANIMATIONS === */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* === UTILITY CLASSES === */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+        
+        .section-padding {
+            padding: var(--space-24) 0;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* === ACCESSIBILITY === */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+        
+        /* Focus indicators */
+        *:focus {
+            outline: 2px solid var(--cyan);
+            outline-offset: 2px;
+        }
+        
+        button:focus,
+        a:focus {
+            outline: 2px solid var(--amber);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <svg width="150" height="60" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 60 20 C 45 20, 35 30, 35 45 C 35 60, 60 90, 60 90 C 60 90, 85 60, 85 45 C 85 30, 75 20, 60 20 Z" fill="#7C3AED"/>
+                    <circle cx="60" cy="45" r="18" fill="#A78BFA"/>
+                    <circle cx="60" cy="45" r="12" fill="#C4B5FD"/>
+                    <circle cx="60" cy="45" r="6" fill="#EDE9FE"/>
+                    <line x1="35" y1="35" x2="85" y2="35" stroke="white" stroke-width="1.5"/>
+                    <line x1="35" y1="45" x2="85" y2="45" stroke="white" stroke-width="1.5"/>
+                    <line x1="35" y1="55" x2="85" y2="55" stroke="white" stroke-width="1.5"/>
+                    <text x="105" y="55" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#7C3AED">Geo</text>
+                    <text x="105" y="85" font-family="Arial, sans-serif" font-size="34" font-weight="300" fill="#A78BFA">Slicing</text>
+                </svg>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><button class="nav-cta" onclick="startFreeTrial()">Start Free Trial</button></li>
+            </ul>
+            
+            <div class="mobile-nav-toggle" onclick="toggleMobileNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="mobile-nav-menu" id="mobileNavMenu">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><button class="nav-cta" onclick="startFreeTrial()">Start Free Trial</button></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>🌍</span>
+                    <span>World-Class Geospatial Intelligence</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Transform Spatial Data Into Intelligence
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Professional geospatial analysis platform with interactive 3D visualization, AI-powered insights, and real-time data processing. Trusted by Fortune 500 companies worldwide.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="#" class="btn-primary" onclick="startFreeTrial()">
+                        <span>🚀</span>
+                        Start Free Trial
+                    </a>
+                    <a href="#features" class="btn-secondary">
+                        <span>📋</span>
+                        Explore Features
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div id="globeContainer"></div>
+                
+                <div class="globe-overlay">
+                    <div class="globe-stats">
+                        <div class="globe-stat">
+                            <span class="globe-stat-number" id="dataPoints">12,847</span>
+                            <span>Active Data Points</span>
+                        </div>
+                        <div class="globe-stat">
+                            <span class="globe-stat-number" id="regions">156</span>
+                            <span>Analyzed Regions</span>
+                        </div>
+                        <div class="globe-stat">
+                            <span class="globe-stat-number" id="insights">2.3M</span>
+                            <span>Generated Insights</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="features-header">
+                <div class="features-badge">🔬 Core Capabilities</div>
+                <h2 class="features-title">Powerful Geospatial Intelligence</h2>
+                <p class="features-subtitle">
+                    Advanced tools for spatial analysis, visualization, and decision-making. 
+                    Transform complex geographical data into actionable business intelligence.
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Interactive 3D Visualization</h3>
+                    <p class="feature-description">
+                        Immersive 3D maps and globes with real-time data overlay. 
+                        WebGL-powered rendering for smooth performance and stunning visuals.
+                    </p>
+                    <a href="#" class="feature-link">
+                        Explore 3D Features →
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI-Powered Analysis</h3>
+                    <p class="feature-description">
+                        Machine learning algorithms for pattern recognition, anomaly detection, 
+                        and predictive spatial modeling with unprecedented accuracy.
+                    </p>
+                    <a href="#" class="feature-link">
+                        Learn About AI →
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Real-Time Data Streaming</h3>
+                    <p class="feature-description">
+                        Live data feeds from satellites, IoT sensors, and public APIs. 
+                        Stream processing for immediate insights and automated alerts.
+                    </p>
+                    <a href="#" class="feature-link">
+                        View Data Sources →
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">High-Performance Processing</h3>
+                    <p class="feature-description">
+                        Distributed computing infrastructure handles massive datasets. 
+                        GPU-accelerated processing for complex spatial calculations.
+                    </p>
+                    <a href="#" class="feature-link">
+                        Technical Details →
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛠️</div>
+                    <h3 class="feature-title">Advanced Analytics Suite</h3>
+                    <p class="feature-description">
+                        Comprehensive tools for spatial statistics, clustering, routing, 
+                        and geofencing with professional-grade accuracy.
+                    </p>
+                    <a href="#" class="feature-link">
+                        Browse Tools →
+                    </a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3 class="feature-title">Seamless Integration</h3>
+                    <p class="feature-description">
+                        REST APIs, SDKs, and webhooks for easy integration. 
+                        Connect with existing systems and workflows effortlessly.
+                    </p>
+                    <a href="#" class="feature-link">
+                        API Documentation →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script>
+        // === NAVIGATION FUNCTIONALITY === 
+        let lastScrollY = window.scrollY;
+        
+        function handleNavScroll() {
+            const nav = document.getElementById('mainNav');
+            
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+            
+            lastScrollY = window.scrollY;
+        }
+        
+        function toggleMobileNav() {
+            const menu = document.getElementById('mobileNavMenu');
+            menu.classList.toggle('active');
+        }
+        
+        // === 3D GLOBE FUNCTIONALITY ===
+        function initGlobe() {
+            const container = document.getElementById('globeContainer');
+            if (!container) return;
+            
+            // Scene setup
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+            
+            // Create Earth
+            const geometry = new THREE.SphereGeometry(2, 64, 64);
+            
+            // Earth texture (using a simple gradient for now)
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            // Create earth-like gradient
+            const gradient = ctx.createLinearGradient(0, 0, 1024, 512);
+            gradient.addColorStop(0, '#1e3a8a');
+            gradient.addColorStop(0.3, '#0ea5e9');
+            gradient.addColorStop(0.7, '#10b981');
+            gradient.addColorStop(1, '#059669');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1024, 512);
+            
+            // Add some "continents"
+            ctx.fillStyle = '#22c55e';
+            ctx.fillRect(100, 150, 200, 100);
+            ctx.fillRect(400, 200, 150, 80);
+            ctx.fillRect(700, 100, 180, 120);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.MeshLambertMaterial({ map: texture });
+            const earth = new THREE.Mesh(geometry, material);
+            scene.add(earth);
+            
+            // Add data points
+            const dataPointGeometry = new THREE.SphereGeometry(0.02, 8, 8);
+            const dataPointMaterial = new THREE.MeshBasicMaterial({ color: 0xF77F00 });
+            
+            for (let i = 0; i < 50; i++) {
+                const phi = Math.random() * Math.PI * 2;
+                const theta = Math.random() * Math.PI;
+                
+                const x = Math.sin(theta) * Math.cos(phi) * 2.05;
+                const y = Math.cos(theta) * 2.05;
+                const z = Math.sin(theta) * Math.sin(phi) * 2.05;
+                
+                const point = new THREE.Mesh(dataPointGeometry, dataPointMaterial);
+                point.position.set(x, y, z);
+                scene.add(point);
+            }
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(5, 3, 5);
+            scene.add(directionalLight);
+            
+            camera.position.z = 5;
+            
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                earth.rotation.y += 0.005;
+                renderer.render(scene, camera);
+            }
+            animate();
+            
+            // Handle resize
+            function handleResize() {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+            }
+            
+            window.addEventListener('resize', handleResize);
+        }
+        
+        // === REAL-TIME DATA SIMULATION ===
+        function animateStats() {
+            const dataPoints = document.getElementById('dataPoints');
+            const regions = document.getElementById('regions');
+            const insights = document.getElementById('insights');
+            
+            let dataCount = 12847;
+            let regionCount = 156;
+            let insightCount = 2300000;
+            
+            setInterval(() => {
+                dataCount += Math.floor(Math.random() * 10) - 5;
+                regionCount += Math.random() > 0.95 ? 1 : 0;
+                insightCount += Math.floor(Math.random() * 1000);
+                
+                if (dataPoints) dataPoints.textContent = dataCount.toLocaleString();
+                if (regions) regions.textContent = regionCount.toLocaleString();
+                if (insights) insights.textContent = (insightCount / 1000000).toFixed(1) + 'M';
+            }, 2000);
+        }
+        
+        // === CTA FUNCTIONS ===
+        function startFreeTrial() {
+            // Smooth scroll to contact section (when it exists)
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // For now, show an alert
+                alert('🚀 Free Trial Coming Soon! \n\nOur world-class geospatial platform will be available for free trials very soon. \n\nStay tuned for updates!');
+            }
+        }
+        
+        // === GSAP ANIMATIONS ===
+        function initAnimations() {
+            // Register ScrollTrigger
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Hero animations
+            gsap.fromTo('.hero-content', {
+                opacity: 0,
+                y: 50
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power2.out'
+            });
+            
+            // Feature cards animation
+            gsap.fromTo('.feature-card', {
+                opacity: 0,
+                y: 30
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: '.features-grid',
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+        }
+        
+        // === INITIALIZATION ===
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize scroll handler
+            window.addEventListener('scroll', handleNavScroll);
+            
+            // Initialize 3D globe
+            setTimeout(initGlobe, 100);
+            
+            // Start real-time animations
+            animateStats();
+            
+            // Initialize GSAP animations
+            if (window.gsap && window.ScrollTrigger) {
+                initAnimations();
+            }
+            
+            console.log('🌍 GeoSlicing World-Class Platform Initialized!');
+        });
+    </script>
+</body>
+</html>
